@@ -1,4 +1,5 @@
 import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
@@ -14,7 +15,7 @@ const Container = styled.section`
     /* display: flex;
     flex-direction: column; */
     p {
-      font-size: 12.5rem;
+      font-size: 15rem;
       text-transform: uppercase;
       white-space: nowrap;
       width: 100%;
@@ -68,8 +69,8 @@ const Section04 = () => {
       const startTl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 60%",
-          end: "top 10%",
+          start: "top 40%",
+          end: "top top",
           scrub: 1,
           // markers: true,
         },
@@ -91,10 +92,10 @@ const Section04 = () => {
         0
       );
       startTl.to(".computer", {
-        // scale: 1.2,
+        // scale: 1.1,
         // ease: "power2.out",
       });
-      let prevProgress = 1;
+
       const computerTl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,

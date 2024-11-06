@@ -3,21 +3,26 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { Project, Skill } from "../type";
 import { myData } from "../api";
+import { AnimatePresence, motion } from "framer-motion";
+import ProjectFolder from "./ProjectFolder";
 
-const Container = styled.div`
+const Container = styled(motion.div)<{ $zIndex: number }>`
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 0;
+  left: 0;
+  right: 0; // 추가
+  margin: 0 auto;
+  z-index: ${({ $zIndex }) => $zIndex};
+  /* transform: translate(-50%, -50%); */
   width: 75.125rem;
   /* width: 100%; */
   height: 37.5rem;
-  margin: 0 auto;
   background: #fff;
   overflow-y: auto;
-  scroll-behavior: smooth;
-  /* box-shadow: inset -1px -1px #fff, inset 1px 1px grey, inset -2px -2px #dfdfdf,
-    inset 2px 2px #0a0a0a; */
+  /* scroll-behavior: smooth; */
+  box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #dfdfdf,
+    inset -2px -2px grey, inset 2px 2px #fff;
+
   -ms-overflow-style: none;
   &::-webkit-scrollbar {
     display: none;
@@ -25,13 +30,16 @@ const Container = styled.div`
 
   .topBar {
     position: sticky;
-    top: 0;
-    width: 100%;
+    top: 2px;
+    left: 1px;
+    width: calc(100% - 4px);
     padding: 0.25rem 0.5rem;
-    background: linear-gradient(to right, #041187, #0d7cca);
+    /* background: linear-gradient(to right, #041187, #0d7cca); */
+    background: linear-gradient(90deg, navy, #1084d0);
     display: flex;
     justify-content: space-between;
     font-family: "DungGeunMo";
+    z-index: 10;
     .title {
       font-size: 1.25rem;
       text-transform: capitalize;
@@ -56,10 +64,13 @@ const Container = styled.div`
   }
 
   .contents {
+    width: 100%;
+    height: 100%;
+    position: relative;
     /* width: fit-content; */
-    margin: 0 auto;
+    /* margin: 0 auto; */
     /* padding: 3.75rem 4.81rem; */
-    padding: 3.75rem;
+
     .items {
       /* width: fit-content; */
       margin: 0 auto;
@@ -68,11 +79,13 @@ const Container = styled.div`
       flex-wrap: wrap;
       gap: 3.13rem 4rem;
       justify-items: center;
+      padding: 3.75rem;
       /* justify-content: center; */
       .item {
         width: 18.875rem;
         /* justify-self: center; */
         /* width: fit-content; */
+        cursor: pointer;
         .img {
           /* width: 100%; */
           height: 11.59094rem;
@@ -108,49 +121,146 @@ const Container = styled.div`
   }
 `;
 
+const Test = styled.div`
+  width: inherit;
+  height: inherit;
+  background: #000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+`;
+
 interface FolderProps {
+  name: string;
   data: Project[];
-  setIsOpen: (isOpen: boolean) => void;
+  zIndex: number;
+  setActiveFolder: () => void;
+  setBtmState: React.Dispatch<React.SetStateAction<string[]>>;
+  setFolder: React.Dispatch<React.SetStateAction<string[]>>;
+  onClose: (name: string) => void;
 }
 
-const Folder = ({ data, setIsOpen }: FolderProps) => {
+const Folder = ({
+  name,
+  data,
+  setBtmState,
+  setFolder,
+  zIndex,
+  setActiveFolder,
+  onClose,
+}: FolderProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  console.log(data);
+  const [selectedProjectId, setSelectedProjectId] = useState<number | null>(
+    null
+  );
+  const [selectedProjectIdx, setSelectedProjectIdx] = useState<number | null>(
+    null
+  );
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    if (containerRef.current) {
-      containerRef.current.scrollTop += e.deltaY;
-    }
+    // if (containerRef.current) {
+    //   containerRef.current.scrollTop += e.deltaY;
+    // }
   };
+
+  // console.log(isOpen);
+
+  const handleClick = () => {
+    setActiveFolder();
+  };
+
+  const closeFolder = (e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    if (zIndex !== 999) {
+      setActiveFolder();
+      return;
+    }
+
+    onClose(name);
+    setSelectedProjectId(null);
+
+    // setBtmState((prev: string[]) => prev.filter((it) => it !== name));
+    // setFolder((prev: string[]) => prev.filter((it) => it !== name));
+    // onClose(name);
+    // setSelectedProjectId(null);
+  };
+  // console.log(selectedProjectId);
   return (
-    <Container ref={containerRef} onWheel={handleWheel}>
-      <div className="topBar">
-        <div className="title">{data[0].category}</div>
-        <div className="xBtn" onClick={() => setIsOpen(false)}>
-          X
+    <>
+      <Container
+        className="folder"
+        ref={containerRef}
+        $zIndex={zIndex}
+        onClick={handleClick}
+        drag
+        dragMomentum={false}
+        initial={{
+          scale: 0,
+          opacity: 0,
+          y: "100%", // 아래에서 시작
+        }}
+        animate={{
+          scale: 1,
+          opacity: 1,
+          y: "35%", // 정중앙으로 이동
+        }}
+        transition={{
+          type: "spring",
+          stiffness: 300,
+          damping: 25,
+        }}
+        exit={{
+          scale: 0,
+          opacity: 0,
+          y: "100%",
+          transition: {
+            duration: 0.3,
+            ease: [0.4, 0, 1, 1],
+          },
+        }}
+      >
+        <div className="topBar">
+          <div className="title">{name}</div>
+          <div className="xBtn" onClick={closeFolder}>
+            X
+          </div>
         </div>
-      </div>
-      <div className="contents">
-        <div className="items">
-          {data.map((it) => (
-            <div className="item" key={it.id}>
-              <div className="img"></div>
-              <div className="desc">
-                <h3 className="content_title">{it.title}</h3>
-                <p className="content_desc">{it.desc}</p>
+        <div className="contents">
+          <div className="items" onWheel={handleWheel}>
+            {data.map((it, idx) => (
+              <div
+                className="item"
+                key={idx}
+                onDoubleClick={() => {
+                  setSelectedProjectId(it.id);
+                  setSelectedProjectIdx(idx);
+                }}
+              >
+                <div className="img"></div>
+                <div className="desc">
+                  <h3 className="content_title">{it.title}</h3>
+                  <p className="content_desc">{it.desc}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+          {/* <Test className="test" onClick={closeFolder}> */}
+          <AnimatePresence mode="wait">
+            {selectedProjectIdx !== null && (
+              <ProjectFolder
+                data={data[selectedProjectIdx]}
+                setSelectedProjectIdx={setSelectedProjectIdx}
+              />
+            )}
+          </AnimatePresence>
+          {/* </Test> */}
         </div>
-      </div>
-      {/* <div className="title-bar topBar">
-        <div className="title-bar-text">ALL</div>
-        <div className="title-bar-controls">
-          <button aria-label="Close"></button>
-        </div>
-      </div> */}
-    </Container>
+      </Container>
+    </>
   );
 };
 

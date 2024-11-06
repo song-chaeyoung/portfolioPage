@@ -2,12 +2,15 @@ import styled from "styled-components";
 import Folder from "./Folder";
 import { useEffect, useState } from "react";
 import { myData } from "../api";
-import { Project, Skill } from "../type";
-
+import { Project } from "../type";
+import { AnimatePresence } from "framer-motion";
 const Container = styled.div`
   width: 100%;
   height: 100%;
-
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   /* position: relative; */
   > img {
     position: absolute;
@@ -58,17 +61,17 @@ const Container = styled.div`
     background: #b5b5b5;
     display: flex;
     align-items: center;
-    gap: 1.75rem;
+    gap: 3rem;
     padding: 0 1.75rem;
     .power {
+      /* flex: 1; */
       background: silver;
       box-shadow: inset -2px -2px #0a0a0a, inset 2px 2px #fff,
         inset -3px -3px grey, inset 3px 3px #dfdfdf;
-      flex: 1;
       position: relative;
-      width: 5.6875rem;
+      /* width: 5.6875rem; */
       /* height: 1.75rem; */
-      padding: 0.375rem 1rem;
+      padding: 0.375rem 1.5rem;
       cursor: pointer;
       &:active {
         box-shadow: inset -2px -2px #fff, inset 2px 2px #0a0a0a,
@@ -101,7 +104,30 @@ const Container = styled.div`
       }
     }
     .state {
-      flex: 14;
+      /* flex: 14; */
+      display: flex;
+      gap: 0.25rem;
+      .stateBtn {
+        background: silver;
+        padding: 0.375rem 2.5rem;
+        background: silver;
+        box-shadow: inset -2px -2px #0a0a0a, inset 2px 2px #fff,
+          inset -3px -3px grey, inset 3px 3px #dfdfdf;
+        > p {
+          font-size: 1.25rem;
+          letter-spacing: -0.0625rem;
+          text-transform: capitalize;
+        }
+        cursor: pointer;
+        &:active {
+          box-shadow: inset -2px -2px #fff, inset 2px 2px #0a0a0a,
+            inset -3px -3px #dfdfdf, inset 3px 3px grey;
+        }
+        &.active {
+          box-shadow: inset -2px -2px #fff, inset 2px 2px #0a0a0a,
+            inset -3px -3px #dfdfdf, inset 3px 3px grey;
+        }
+      }
     }
   }
 `;
@@ -111,9 +137,12 @@ const Container = styled.div`
 // }
 
 const ComputerDisplaySc4 = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState<Project[]>([]);
-  const [selected, setSelected] = useState<Project[]>([]);
+  const [selected, setSelected] = useState<Record<string, Project[]>>({});
+  const [btmState, setBtmState] = useState<string[]>([]);
+  const [folder, setFolder] = useState<string[]>([]);
+  const [activeFolder, setActiveFolder] = useState<string>("");
+  const [activeState, setActiveState] = useState<string>("");
 
   useEffect(() => {
     (async () => {
@@ -122,15 +151,39 @@ const ComputerDisplaySc4 = () => {
     })();
   }, []);
 
+  const setActive = (folderName: string) => {
+    setActiveFolder(folderName);
+    setActiveState(folderName);
+  };
+
+  const handleFolderClose = (name: string) => {
+    setBtmState((prev) => prev.filter((it) => it !== name));
+    setFolder((prev) => prev.filter((it) => it !== name));
+  };
+
   const folderOpen = (name: string) => {
-    if (name === "all") {
-      setSelected(data);
-    } else {
-      const filteredData = data.filter((item) => item.category === name);
-      setSelected(filteredData);
+    if (btmState.includes(name) || activeFolder === name) {
+      setActive(name);
+      return;
     }
 
-    setIsOpen(true);
+    if (name === "all") {
+      setSelected((prev) => ({ ...prev, [name]: data }));
+      setBtmState((prev) => [...prev, name]);
+      setFolder((prev) => [...prev, name]);
+      setActive(name);
+    } else {
+      const filteredData = data.filter((item) => item.category === name);
+      setSelected((prev) => ({ ...prev, [name]: filteredData }));
+      setBtmState((prev) => [...prev, name]);
+      setFolder((prev) => [...prev, name]);
+      setActive(name);
+    }
+  };
+
+  const stateClick = (name: string) => {
+    if (!btmState.includes(name)) return;
+    setActive(name);
   };
 
   return (
@@ -165,18 +218,42 @@ const ComputerDisplaySc4 = () => {
         </div>
         <div className="btmBar">
           <div className="power">
-            {/* <img src="/pixelart/power.jpg" alt="power" /> */}
             <div className="powerBtn">
               <img src="/pixelart/window-logo.png" alt="window-logo" />
               <p>Start</p>
             </div>
           </div>
-          <div className="state"></div>
+          <div className="state">
+            {btmState.length > 0 &&
+              btmState.map((it, idx) => (
+                <div
+                  key={idx}
+                  className={
+                    activeState === it ? "stateBtn active" : "stateBtn"
+                  }
+                  onClick={() => stateClick(it)}
+                >
+                  <p>{it}</p>
+                </div>
+              ))}
+          </div>
         </div>
-        {/* <Folder /> */}
-        {isOpen && selected.length > 0 && (
-          <Folder setIsOpen={setIsOpen} data={selected} />
-        )}
+        <AnimatePresence>
+          {Object.keys(selected).length > 0 &&
+            folder.length > 0 &&
+            folder.map((it, idx) => (
+              <Folder
+                key={idx}
+                name={it}
+                data={selected[it]}
+                setBtmState={setBtmState}
+                setFolder={setFolder}
+                zIndex={activeFolder === it ? 999 : 1}
+                setActiveFolder={() => setActive(it)}
+                onClose={handleFolderClose}
+              />
+            ))}
+        </AnimatePresence>
       </Container>
     </>
   );

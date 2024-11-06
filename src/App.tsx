@@ -8,6 +8,7 @@ import Section01 from "./sections/Section01";
 import Section02 from "./sections/Section02";
 import Section03 from "./sections/Section03";
 import Section04 from "./sections/Section04";
+import Section05 from "./sections/Section05";
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -93,10 +94,10 @@ const Main = styled.main`
   width: 100%;
   height: 100%;
   overflow-y: auto;
-  /* -ms-overflow-style: none;
+  -ms-overflow-style: none;
   &::-webkit-scrollbar {
     display: none;
-  } */
+  }
   > section {
     padding-top: 70px;
   }
@@ -163,6 +164,7 @@ const App = () => {
             <Section02 ref={section2} />
             <Section03 />
             <Section04 />
+            {/* <Section05 /> */}
           </Main>
         </AppContainer>
       )}
