@@ -20,8 +20,6 @@ const Container = styled(motion.div)`
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  /* pointer-events: none; */
-  /* z-index: 1000 !important; */
 
   .project_topBar {
     position: fixed;
@@ -33,6 +31,7 @@ const Container = styled(motion.div)`
     display: flex;
     justify-content: space-between;
     font-family: "DungGeunMo";
+    cursor: pointer;
     .title {
       font-size: 1.25rem;
       text-transform: capitalize;
@@ -64,6 +63,7 @@ const Container = styled(motion.div)`
     border: 2px solid #666;
     border-radius: 50%;
     transition: all 0.3s;
+    cursor: pointer;
     img {
       width: 1.75rem;
       /* width: 100%; */
@@ -77,18 +77,19 @@ const Container = styled(motion.div)`
   .project_contents {
     height: fit-content;
     display: flex;
-    /* justify-content: center; */
-    /* padding: 3rem 1.75rem; */
     align-items: center;
     gap: 3rem;
-    /* margin: auto 0; */
+    padding: 0 2rem;
     .project_img {
       flex: 1;
-      width: 34.375rem;
-      /* width: 100%; */
-      height: 21.25rem;
+      width: 38.375rem;
       background: #d9d9d9;
-      /* height: 100%; */
+      border: 1px solid #efefef;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
     }
     .project_desc {
       flex: 1;
@@ -129,13 +130,21 @@ const Container = styled(motion.div)`
         display: flex;
         gap: 1rem;
         .icon {
-          width: 1.875rem;
-          height: 1.875rem;
-          background: #999;
+          width: 1.75rem;
+          height: 1.75rem;
+          cursor: pointer;
+          transition: all 0.3s;
+          img {
+            width: 100%;
+            height: 100%;
+          }
+          &:hover {
+            transform: translateY(-0.25rem);
+          }
         }
       }
       .content_desc {
-        font-size: 0.875rem;
+        font-size: 1rem;
         line-height: 150%;
       }
     }
@@ -218,7 +227,21 @@ const ProjectFolder = ({ data, setSelectedProjectIdx }: ProjectFolderProps) => {
         <img src="/pixelart/arr_b.png" alt="back" />
       </div>
       <div className="project_contents">
-        <div className="project_img"></div>
+        <div className="project_img">
+          {/* <a
+            href={data.links.find((it) => it.type === "website")?.link}
+            target="_blank"
+          >
+            <img
+              src={`/projectImg/project${data.id}.png`}
+              alt={`project${data.id}`}
+            />
+          </a> */}
+          <img
+            src={`/projectImg/project${data.id}.png`}
+            alt={`project${data.id}`}
+          />
+        </div>
         <div className="project_desc">
           <h1 className="title">{data.title}</h1>
           <div className="tags">
@@ -230,9 +253,30 @@ const ProjectFolder = ({ data, setSelectedProjectIdx }: ProjectFolderProps) => {
           </div>
           <div className="line"></div>
           <div className="icons">
-            <div className="icon"></div>
-            <div className="icon"></div>
-            <div className="icon"></div>
+            {data.links.map(
+              (it) =>
+                it.type === "github" && (
+                  <a href={it.link} target="_blank" className="icon">
+                    <img src="/pixelart/githubIcon.svg" alt="github" />
+                  </a>
+                )
+            )}
+            {data.links.map(
+              (it) =>
+                it.type === "figma" && (
+                  <a href={it.link} target="_blank" className="icon">
+                    <img src="/pixelart/figmaIcon.svg" alt="figma" />
+                  </a>
+                )
+            )}
+            {data.links.map(
+              (it) =>
+                it.type === "website" && (
+                  <a href={it.link} target="_blank" className="icon">
+                    <img src="/pixelart/siteIcon.svg" alt="website" />
+                  </a>
+                )
+            )}
           </div>
           <p className="content_desc">{data.desc}</p>
         </div>

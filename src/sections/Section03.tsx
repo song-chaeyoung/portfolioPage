@@ -25,7 +25,7 @@ const Background = styled.div`
 `;
 
 const Text = styled.p`
-  position: fixed;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -36,14 +36,14 @@ const Text = styled.p`
   z-index: 0;
   transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease;
   &.fixed_position {
-    /* top: auto;
-    bottom: 5%;
-    left: -10%;
-    transform: none;
-    scale: 0.4;
-    opacity: 0.8; */
-    transform: translate(-60vw, 35vh) scale(0.4);
+    transform: translate(-70vw, 35vh) scale(0.4);
     opacity: 0.8;
+  }
+
+  @media screen and (max-width: 768px) {
+    &.fixed_position {
+      transform: translate(-50%, 35vh) scale(0.4);
+    }
   }
 `;
 
@@ -58,44 +58,71 @@ const Container = styled.div`
     position: absolute;
     .all {
       position: relative;
-      width: 300vw;
+      /* width: 300vw; */
+      width: max(300vw, 3000px);
       height: 100%;
-      > li {
+      z-index: 10;
+      li {
+        /* position: relative;
+        z-index: 10; */
+      }
+    }
+    .sec3Icons {
+      width: 100%;
+      height: 100%;
+      img {
+        position: absolute;
+        width: 2rem;
+        height: 2rem;
       }
     }
   }
 `;
+
+const ICONS = [
+  {
+    image: "/pixelart/icon01.png",
+    position: { left: "90%", top: "10%" },
+  },
+  {
+    image: "/pixelart/icon02.png",
+    position: { left: "85%", top: "88%" },
+  },
+  {
+    image: "/pixelart/icon03.png",
+    position: { left: "40%", top: "90%" },
+  },
+  {
+    image: "/pixelart/icon04.png",
+    position: { left: "95%", top: "65%" },
+  },
+  {
+    image: "/pixelart/icon05.png",
+    position: { left: "77%", top: "20%" },
+  },
+];
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Section3 = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
-  const boxRef = useRef<HTMLLIElement>(null);
   const textRef = useRef<HTMLParagraphElement>(null);
   const [data, setData] = useState<Skill[]>([]);
+  // const dataLoaded = useRef(false);
 
   useEffect(() => {
     (async () => {
       const response = await myData();
       setData(response.skills);
+      // dataLoaded.current = true;
     })();
+  }, []);
 
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: "vertical",
-      smoothWheel: true,
-      wheelMultiplier: 0.5,
-    });
-
+  useEffect(() => {
     if (sectionRef.current) {
-      lenis.on("scroll", ScrollTrigger.update);
-      gsap.ticker.add((time) => {
-        lenis.raf(time * 1000);
-      });
-      gsap.ticker.lagSmoothing(0);
-      const width = sectionRef.current.scrollWidth - window.innerHeight;
+      // const width = sectionRef.current.scrollWidth - window.innerHeight;
+      const width = sectionRef.current.scrollWidth;
 
       const mainTl = gsap.timeline({
         scrollTrigger: {
@@ -107,156 +134,124 @@ const Section3 = () => {
           pin: true,
           pinSpacing: true,
           anticipatePin: 1,
-          onEnter: () => {
-            ScrollTrigger.create({
-              trigger: textRef.current,
-              start: "top 40%",
-              onUpdate: (self) => {
-                if (self.direction === 1) {
-                  textRef.current?.classList.add("fixed_position");
-                } else if (self.direction === -1) {
-                  textRef.current?.classList.remove("fixed_position");
-                }
-              },
-            });
+          id: "section3", // ID 추가
+          // fastScrollEnd: true,
+          onLeave: () => {
+            ScrollTrigger.clearScrollMemory();
           },
-          // onLeave: () => {
-          //   // ScrollTrigger.create({
-          //   //   trigger: triggerRef.current,
-          //   //   start: "bottom bottom",
-          //   //   // end: "+=100vh",
-          //   //   pin: true,
-          //   //   pinSpacing: false,
-          //   //   markers: true,
-          //   // });
-          // },
-          // onLeave: () => {
-          //   // Section3가 고정된 상태로 유지
-          //   gsap.to(triggerRef.current, {
-          //     // y: "0%",
-          //     duration: 1,
-          //     ease: "power2.inOut",
-          //   });
-          // },
-          // onEnterBack: () => {
-          //   // Section3가 고정된 상태로 유지
-          //   gsap.to(triggerRef.current, {
-          //     // y: "0%",
-          //     duration: 1,
-          //     ease: "power2.inOut",
-          //   });
-          // },
         },
       });
-
-      // const tl = gsap.timeline({
-      //   scrollTrigger: {
-      //     trigger: triggerRef.current,
-      //     start: "top top",
-      //     end: "+=300%",
-      //     scrub: 1,
-      //     pin: true,
-      //     pinSpacing: true,
-      //     anticipatePin: 1,
-      //     onEnter: () => {
-      //       ScrollTrigger.create({
-      //         trigger: textRef.current,
-      //         start: "top 40%",
-      //         onUpdate: (self) => {
-      //           if (self.direction === 1) {
-      //             textRef.current?.classList.add("fixed_position");
-      //           } else if (self.direction === -1) {
-      //             textRef.current?.classList.remove("fixed_position");
-      //           }
-      //         },
-      //         markers: true,
-      //       });
-      //     },
-      //   },
-      // });
 
       mainTl.to(
         sectionRef.current,
         {
           translateX: -width,
           duration: 2,
+          ease: "none",
         },
         "-=0.5"
       );
 
-      const skillItems = document.querySelectorAll(".skillItem");
-      skillItems.forEach((item, index) => {
-        const speedOption = [0.5, 0.8, 1.1, 1.4, 1.7];
-        // const speed = speedOption[index % speedOption.length];
-        const speed = 0.8 + index * 0.2;
-        // const speed = 0.5 + Math.random();
-        mainTl.to(
-          item,
-          {
-            x: `-=${width * speed}`,
-            duration: 2,
-            ease: "none",
-          },
-          0
-        );
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: "top top",
+        end: "9999",
+        // end: () => `+=${width}`,
+        onEnter: () => {
+          textRef.current?.classList.add("fixed_position");
+        },
+        onEnterBack: () => {
+          textRef.current?.classList.add("fixed_position");
+        },
+        onLeaveBack: () => {
+          textRef.current?.classList.remove("fixed_position");
+        },
+        onLeave: () => {
+          // 추가
+          textRef.current?.classList.remove("fixed_position");
+        },
       });
 
-      // const transitionTl = gsap.timeline({
-      //   scrollTrigger: {
-      //     trigger: triggerRef.current,
-      //     start: "bottom bottom",
-      //     // end: "bottom+=300%",
-      //     scrub: 1,
-      //     pin: true,
-      //     pinSpacing: false,
-      //     enabled: false,
-      //     markers: true,
-      //   } as ScrollTrigger.Vars,
+      // const skillItems = document.querySelectorAll(".skillItem");
+
+      // skillItems.forEach((item, index) => {
+      //   const speedOption = [0.5, 0.8, 1.1, 1.4, 1.7];
+      //   // const speed = speedOption[index % speedOption.length];
+      //   const speed = 0.8 + index * 0.2;
+      //   // const speed = 0.5 + Math.random();
+      //   mainTl.to(
+      //     item,
+      //     {
+      //       x: `-=${width * speed}`,
+      //       duration: 2,
+      //       ease: "none",
+      //     },
+      //     0
+      //   );
       // });
 
       return () => {
-        lenis.destroy();
         mainTl.scrollTrigger?.kill();
         mainTl.kill();
-        // transitionTl.scrollTrigger?.kill();
-        // transitionTl.kill();
       };
     }
   }, []);
 
+  useEffect(() => {
+    if (sectionRef.current) {
+      const width = sectionRef.current.scrollWidth - window.innerHeight;
+      const skillItems = document.querySelectorAll(".skillItem");
+      // const speed = 0.8 + index * 0.2;
+      const speedOptions = [0.06, 0.1, 0.25, 0.09, 0.03];
+
+      skillItems.forEach((item, index) => {
+        const speed = speedOptions[index % speedOptions.length];
+        gsap.to(item, {
+          scrollTrigger: {
+            trigger: triggerRef.current,
+            start: "top top",
+            end: () => `+=${width}`,
+            scrub: 1,
+            // pin: false, // 개별 아이템은 pin하지 않음
+            invalidateOnRefresh: true, // 화면 크기 변경 시 재계산
+          },
+          x: `-=${width * speed}`,
+          ease: "none",
+        });
+      });
+
+      return () => {
+        skillItems.forEach((_, index) => {
+          ScrollTrigger.getById(`skill-${index}`)?.kill();
+        });
+      };
+    }
+  }, [data]);
+
   return (
     <MainSection ref={triggerRef}>
       <Background />
-      <Text ref={textRef}>저는 이런걸 좀 합니다</Text>
+      <Text ref={textRef}>저는 이런 기술을 사용해봤어요</Text>
       <Container ref={sectionRef}>
         <article>
           <ul className="all">
-            {/* {data.map((item: Skill, idx: number) => (
-              <li
-                key={idx}
-                className="skillItem"
-                ref={boxRef}
-                data-x={item.x}
-                data-y={item.y}
-                // style={{ left: `${item.x}%`, top: `${item.y}%` }}
-                style={{ position: "absolute", left: "20%", top: "20%" }}
-              >
-                <img src="/pixelart/pixelicon_sit.png" alt="pixelicon" />
-                <ul>
-                  <li className="title">{item.title}</li>
-                  {item.items.map((it: SkillItem, idx: number) => (
-                    <li key={idx}>
-                      <h3>{it.name}</h3>
-                      <p>{it.desc}</p>
-                    </li>
-                  ))}
-                </ul>
-              </li>
-            ))} */}
             {data.map((item, idx) => (
               <ScrollItemSc3 data={item} key={idx} />
             ))}
           </ul>
+          <div className="sec3Icons">
+            {ICONS.map((icon, idx) => (
+              <img
+                src={icon.image}
+                alt={`icon${idx + 1}`}
+                key={idx}
+                style={{
+                  left: icon.position.left,
+                  top: icon.position.top,
+                }}
+              />
+            ))}
+          </div>
         </article>
       </Container>
     </MainSection>

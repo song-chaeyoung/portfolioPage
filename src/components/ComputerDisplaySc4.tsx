@@ -1,12 +1,20 @@
 import styled from "styled-components";
 import Folder from "./Folder";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { myData } from "../api";
 import { Project } from "../type";
 import { AnimatePresence } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import TextFolder from "./TextFolder";
+import { motion } from "framer-motion";
 const Container = styled.div`
   width: 100%;
   height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* z-index: 10; */
   -ms-overflow-style: none;
   &::-webkit-scrollbar {
     display: none;
@@ -23,7 +31,7 @@ const Container = styled.div`
   }
   .icon_container {
     font-family: "DungGeunMo";
-    margin: 8.8125rem 4.25rem 0;
+    padding: 8.8125rem 4.25rem 0;
     display: flex;
     justify-content: space-between;
     .icons_project {
@@ -57,20 +65,18 @@ const Container = styled.div`
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 2.5rem;
+    height: 2.25rem;
+    /* height: fit-content; */
     background: #b5b5b5;
     display: flex;
     align-items: center;
     gap: 3rem;
     padding: 0 1.75rem;
     .power {
-      /* flex: 1; */
+      flex: 1;
       background: silver;
       box-shadow: inset -2px -2px #0a0a0a, inset 2px 2px #fff,
         inset -3px -3px grey, inset 3px 3px #dfdfdf;
-      position: relative;
-      /* width: 5.6875rem; */
-      /* height: 1.75rem; */
       padding: 0.375rem 1.5rem;
       cursor: pointer;
       &:active {
@@ -84,15 +90,14 @@ const Container = styled.div`
         width: 100%;
         height: 100%;
       }
+
       .powerBtn {
-        position: relative;
         width: 100%;
         height: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
         gap: 0.75rem;
-
         > img {
           width: 1.375rem;
           height: 1.25rem;
@@ -102,9 +107,38 @@ const Container = styled.div`
           letter-spacing: -0.0625rem;
         }
       }
+      .powerlist {
+        position: absolute;
+        left: 1.75rem;
+        bottom: 2.25rem;
+        /* width: 15rem; */
+        /* height: 21rem; */
+        background: silver;
+        box-shadow: inset -2px -2px #0a0a0a, inset 2px 2px #fff,
+          inset -3px -3px grey, inset 3px 3px #dfdfdf;
+        /* padding: 0.5rem; */
+        padding: 0.15rem;
+        li {
+          display: flex;
+          /* flex-direction: column; */
+          align-items: center;
+          gap: 0.5rem;
+          width: 15rem;
+          padding: 0.25rem;
+          color: #000;
+          img {
+            width: 2.5rem;
+            /* height: 1.25rem; */
+          }
+          &:hover {
+            background: var(--main-color);
+            color: #fff;
+          }
+        }
+      }
     }
     .state {
-      /* flex: 14; */
+      flex: 100;
       display: flex;
       gap: 0.25rem;
       .stateBtn {
@@ -129,6 +163,15 @@ const Container = styled.div`
         }
       }
     }
+    .time {
+      flex: 1;
+      background: silver;
+      box-shadow: inset -2px -2px #0a0a0a, inset 2px 2px #fff,
+        inset -3px -3px grey, inset 3px 3px #dfdfdf;
+      padding: 0.375rem 1rem;
+      font-size: 1.25rem;
+      color: #000;
+    }
   }
 `;
 
@@ -138,17 +181,38 @@ const Container = styled.div`
 
 const ComputerDisplaySc4 = () => {
   const [data, setData] = useState<Project[]>([]);
+  const [textFolderOpen, setTextFolderOpen] = useState<string>("");
   const [selected, setSelected] = useState<Record<string, Project[]>>({});
   const [btmState, setBtmState] = useState<string[]>([]);
   const [folder, setFolder] = useState<string[]>([]);
   const [activeFolder, setActiveFolder] = useState<string>("");
   const [activeState, setActiveState] = useState<string>("");
+  const [now, setNow] = useState<string>("");
+  const [powerList, setPowerList] = useState<boolean>(false);
+
+  // const containerRef = useRef<HTMLDivElement>(null);
+  // gsap.registerPlugin(ScrollTrigger);
 
   useEffect(() => {
     (async () => {
       const response = await myData();
       setData(response.projectItems);
     })();
+
+    const updateTime = () => {
+      const today = new Date();
+      const hours =
+        today.getHours() < 10 ? `0${today.getHours()}` : today.getHours();
+      const minutes =
+        today.getMinutes() < 10 ? `0${today.getMinutes()}` : today.getMinutes();
+      const nowTime = `${hours}:${minutes}`;
+      setNow(nowTime);
+    };
+
+    updateTime();
+    const intervalId = setInterval(updateTime, 1000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   const setActive = (folderName: string) => {
@@ -181,6 +245,15 @@ const ComputerDisplaySc4 = () => {
     }
   };
 
+  const textFolderOpenEvent = (name: string) => {
+    if (btmState.includes(name) || activeFolder === name) {
+      setActive(name);
+      return;
+    }
+    setBtmState((prev) => [...prev, name]);
+    setTextFolderOpen(name);
+  };
+
   const stateClick = (name: string) => {
     if (!btmState.includes(name)) return;
     setActive(name);
@@ -192,33 +265,110 @@ const ComputerDisplaySc4 = () => {
         <img src="/pixelart/bg.jpg" alt="bg" />
         <div className="icon_container">
           <div className="icons_project">
-            <div className="icon" onClick={() => folderOpen("all")}>
+            <motion.div
+              className="icon"
+              drag
+              dragMomentum={false}
+              onClick={() => folderOpen("all")}
+            >
               <img src="/pixelart/documents.png" alt="documents" />
               <p>ALL</p>
-            </div>
-            <div className="icon" onClick={() => folderOpen("javascript")}>
+            </motion.div>
+            <motion.div
+              className="icon"
+              drag
+              dragMomentum={false}
+              onClick={() => folderOpen("javascript")}
+            >
               <img src="/pixelart/documents.png" alt="documents" />
               <p>JavaScript</p>
-            </div>
-            <div className="icon" onClick={() => folderOpen("react")}>
+            </motion.div>
+            <motion.div
+              className="icon"
+              drag
+              dragMomentum={false}
+              onClick={() => folderOpen("react")}
+            >
               <img src="/pixelart/documents.png" alt="documents" />
               <p>React</p>
-            </div>
-            <div className="icon" onClick={() => folderOpen("typescript")}>
+            </motion.div>
+            <motion.div
+              className="icon"
+              drag
+              dragMomentum={false}
+              onClick={() => folderOpen("typescript")}
+            >
               <img src="/pixelart/documents.png" alt="documents" />
               <p>TypeScript</p>
-            </div>
+            </motion.div>
+            <motion.div
+              className="icon"
+              drag
+              dragMomentum={false}
+              onClick={() => textFolderOpenEvent("readme")}
+            >
+              <img className="text" src="/pixelart/text.png" alt="text" />
+              <p>READ ME</p>
+            </motion.div>
           </div>
           <div className="icons_contact">
-            <div className="icon">
+            <motion.div
+              className="icon"
+              drag
+              dragMomentum={false}
+              onClick={() => textFolderOpenEvent("contact")}
+            >
               <img className="text" src="/pixelart/text.png" alt="text" />
               <p>CONTACT</p>
-            </div>
+            </motion.div>
           </div>
         </div>
         <div className="btmBar">
           <div className="power">
-            <div className="powerBtn">
+            {powerList && (
+              <ul className="powerlist">
+                <li
+                  onClick={() => {
+                    folderOpen("all");
+                    setPowerList(false);
+                  }}
+                >
+                  <img src="/pixelart/documents.png" alt="documents" />
+                  <p>ALL</p>
+                </li>
+                <li
+                  onClick={() => {
+                    folderOpen("javascript");
+                    setPowerList(false);
+                  }}
+                >
+                  <img src="/pixelart/documents.png" alt="documents" />
+                  <p>JavaScript</p>
+                </li>
+                <li
+                  onClick={() => {
+                    folderOpen("react");
+                    setPowerList(false);
+                  }}
+                >
+                  <img src="/pixelart/documents.png" alt="documents" />
+                  <p>React</p>
+                </li>
+                <li
+                  onClick={() => {
+                    folderOpen("typescript");
+                    setPowerList(false);
+                  }}
+                >
+                  <img src="/pixelart/documents.png" alt="documents" />
+                  <p>TypeScript</p>
+                </li>
+              </ul>
+            )}
+            <div
+              className="powerBtn"
+              onClick={() => setPowerList((prev) => !prev)}
+            >
               <img src="/pixelart/window-logo.png" alt="window-logo" />
               <p>Start</p>
             </div>
@@ -237,6 +387,11 @@ const ComputerDisplaySc4 = () => {
                 </div>
               ))}
           </div>
+          <div className="time">
+            <div className="timeBtn">
+              <p>{now}</p>
+            </div>
+          </div>
         </div>
         <AnimatePresence>
           {Object.keys(selected).length > 0 &&
@@ -253,6 +408,16 @@ const ComputerDisplaySc4 = () => {
                 onClose={handleFolderClose}
               />
             ))}
+          {textFolderOpen !== "" && (
+            <TextFolder
+              text={textFolderOpen}
+              setBtmState={setBtmState}
+              setFolder={setFolder}
+              zIndex={activeFolder === textFolderOpen ? 999 : 1}
+              setActiveFolder={() => setActive(textFolderOpen)}
+              setTextFolderOpen={setTextFolderOpen}
+            />
+          )}
         </AnimatePresence>
       </Container>
     </>

@@ -17,7 +17,7 @@ const Container = styled.li<{ x: number; y: number }>`
       transform: scaleX(-1);
     }
   }
-  &:nth-child(3) {
+  &:nth-child(2) {
     img {
       display: none;
     }
@@ -35,7 +35,6 @@ const Container = styled.li<{ x: number; y: number }>`
     width: 100%;
     li {
       width: 32rem;
-      /* width: fit-content; */
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -44,7 +43,6 @@ const Container = styled.li<{ x: number; y: number }>`
       border-radius: 0.625rem;
       background: #000;
       border-top: none;
-      /* white-space: nowrap; */
       &:nth-child(1) {
         background: transparent;
         font-size: 2rem;
@@ -54,9 +52,6 @@ const Container = styled.li<{ x: number; y: number }>`
         border: 3px solid var(--main-color);
         box-shadow: 0px 0px 10px 2px rgba(0, 111, 255, 0.5);
       }
-      /* &:nth-child(2) {
-              border-top: none;
-            } */
       h3 {
         font-family: "DungGeunMo";
         font-size: 1.375rem;

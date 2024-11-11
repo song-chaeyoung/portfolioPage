@@ -9,6 +9,9 @@ import Section02 from "./sections/Section02";
 import Section03 from "./sections/Section03";
 import Section04 from "./sections/Section04";
 import Section05 from "./sections/Section05";
+import Lenis from "lenis";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import gsap from "gsap";
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -76,9 +79,19 @@ const GlobalStyle = createGlobalStyle`
     --main-lightblue: #B2D4FF
   }
 
+  @media (max-width: 1500px) {
+    html {
+      font-size: 90%;
+    }
+  }
   @media (max-width: 1200px) {
     html {
-      font-size: 14px;
+      font-size: 80%;
+    }
+  }
+  @media (max-width: 768px) {
+    html {
+      font-size: 70%;
     }
   }
 `;
@@ -101,6 +114,12 @@ const Main = styled.main`
   > section {
     padding-top: 70px;
   }
+
+  @media screen and (max-width: 768px) {
+    > section {
+      padding-top: 30px;
+    }
+  }
 `;
 
 const App = () => {
@@ -119,32 +138,69 @@ const App = () => {
   const allSection = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: "vertical",
+      smoothWheel: true,
+      wheelMultiplier: 0.5,
+      touchMultiplier: 2,
+    });
+
+    lenis.on("scroll", ScrollTrigger.update);
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+    gsap.ticker.lagSmoothing(0);
+
+    return () => {
+      lenis.destroy();
+    };
+  }, []);
+
+  useEffect(() => {
+    let isAnimating = false;
+
     const wheelHandler = (e: WheelEvent) => {
       const { deltaY } = e;
       const scrollY = window.scrollY;
       const pageHeight = window.innerHeight;
 
+      if (isAnimating) return;
+
       if (scrollY >= pageHeight && scrollY < pageHeight * 2 && deltaY > 0) {
-        e.preventDefault();
+        // e.preventDefault();
+        isAnimating = true;
         window.scrollTo({
           top: pageHeight * 2,
           behavior: "smooth",
         });
+
+        setTimeout(() => {
+          isAnimating = false;
+        }, 1000);
       } else if (
         scrollY >= pageHeight * 2 &&
         scrollY < pageHeight * 3 &&
         deltaY < 0
       ) {
-        e.preventDefault();
+        // e.preventDefault();
+        isAnimating = true;
         window.scrollTo({
           top: pageHeight,
           left: 0,
           behavior: "smooth",
         });
+        setTimeout(() => {
+          isAnimating = false;
+        }, 1000);
       }
     };
     const allSectionCurrent = allSection.current;
-    allSectionCurrent?.addEventListener("wheel", wheelHandler);
+
+    allSectionCurrent?.addEventListener("wheel", wheelHandler, {
+      passive: false,
+    });
 
     return () => {
       allSectionCurrent?.removeEventListener("wheel", wheelHandler);
@@ -164,7 +220,7 @@ const App = () => {
             <Section02 ref={section2} />
             <Section03 />
             <Section04 />
-            {/* <Section05 /> */}
+            <Section05 />
           </Main>
         </AppContainer>
       )}

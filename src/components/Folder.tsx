@@ -13,16 +13,14 @@ const Container = styled(motion.div)<{ $zIndex: number }>`
   right: 0; // 추가
   margin: 0 auto;
   z-index: ${({ $zIndex }) => $zIndex};
-  /* transform: translate(-50%, -50%); */
   width: 75.125rem;
-  /* width: 100%; */
   height: 37.5rem;
+  /* width: 100%; */
   background: #fff;
   overflow-y: auto;
   /* scroll-behavior: smooth; */
   box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #dfdfdf,
     inset -2px -2px grey, inset 2px 2px #fff;
-
   -ms-overflow-style: none;
   &::-webkit-scrollbar {
     display: none;
@@ -34,12 +32,11 @@ const Container = styled(motion.div)<{ $zIndex: number }>`
     left: 1px;
     width: calc(100% - 4px);
     padding: 0.25rem 0.5rem;
-    /* background: linear-gradient(to right, #041187, #0d7cca); */
     background: linear-gradient(90deg, navy, #1084d0);
     display: flex;
     justify-content: space-between;
     font-family: "DungGeunMo";
-    z-index: 10;
+    /* z-index: 10; */
     .title {
       font-size: 1.25rem;
       text-transform: capitalize;
@@ -85,15 +82,17 @@ const Container = styled(motion.div)<{ $zIndex: number }>`
         width: 18.875rem;
         /* justify-self: center; */
         /* width: fit-content; */
+        transition: all 0.3s;
         cursor: pointer;
         .img {
-          /* width: 100%; */
-          height: 11.59094rem;
+          width: 100%;
+          /* width: 18.875rem; */
+          height: 11.5rem;
           background: #d9d9d9;
           margin-bottom: 1rem;
+          border: 1px solid #efefef;
           img {
             width: 100%;
-
             height: 100%;
             object-fit: cover;
           }
@@ -106,7 +105,7 @@ const Container = styled(motion.div)<{ $zIndex: number }>`
           color: #000;
           .content_title {
             font-family: "DungGeunMo";
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             letter-spacing: -0.0625rem;
           }
           .content_desc {
@@ -116,19 +115,12 @@ const Container = styled(motion.div)<{ $zIndex: number }>`
             line-height: 1rem;
           }
         }
+        &:hover {
+          scale: 1.1;
+        }
       }
     }
   }
-`;
-
-const Test = styled.div`
-  width: inherit;
-  height: inherit;
-  background: #000;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
 `;
 
 interface FolderProps {
@@ -141,32 +133,50 @@ interface FolderProps {
   onClose: (name: string) => void;
 }
 
+export const containerVariants = {
+  initial: {
+    scale: 0,
+    opacity: 0,
+    y: "100%",
+  },
+  visible: {
+    scale: 1,
+    opacity: 1,
+    // y: "35%",
+    y: "-50%",
+    top: "50%",
+  },
+  exit: {
+    scale: 0,
+    opacity: 0,
+    y: "100%",
+    transition: {
+      duration: 0.3,
+      ease: [0.4, 0, 1, 1],
+    },
+  },
+  transition: {
+    type: "spring",
+    stiffness: 300,
+    damping: 25,
+  },
+};
+
 const Folder = ({
   name,
   data,
-  setBtmState,
-  setFolder,
   zIndex,
   setActiveFolder,
   onClose,
 }: FolderProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [selectedProjectId, setSelectedProjectId] = useState<number | null>(
-    null
-  );
   const [selectedProjectIdx, setSelectedProjectIdx] = useState<number | null>(
     null
   );
-  const [isOpen, setIsOpen] = useState(false);
 
   const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    // if (containerRef.current) {
-    //   containerRef.current.scrollTop += e.deltaY;
-    // }
   };
-
-  // console.log(isOpen);
 
   const handleClick = () => {
     setActiveFolder();
@@ -181,14 +191,15 @@ const Folder = ({
     }
 
     onClose(name);
-    setSelectedProjectId(null);
-
-    // setBtmState((prev: string[]) => prev.filter((it) => it !== name));
-    // setFolder((prev: string[]) => prev.filter((it) => it !== name));
-    // onClose(name);
     // setSelectedProjectId(null);
   };
-  // console.log(selectedProjectId);
+
+  useEffect(() => {
+    if (selectedProjectIdx !== null && containerRef.current) {
+      containerRef.current.scrollTo({ top: 0 });
+    }
+  }, [selectedProjectIdx]);
+
   return (
     <>
       <Container
@@ -198,30 +209,11 @@ const Folder = ({
         onClick={handleClick}
         drag
         dragMomentum={false}
-        initial={{
-          scale: 0,
-          opacity: 0,
-          y: "100%", // 아래에서 시작
-        }}
-        animate={{
-          scale: 1,
-          opacity: 1,
-          y: "35%", // 정중앙으로 이동
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 300,
-          damping: 25,
-        }}
-        exit={{
-          scale: 0,
-          opacity: 0,
-          y: "100%",
-          transition: {
-            duration: 0.3,
-            ease: [0.4, 0, 1, 1],
-          },
-        }}
+        variants={containerVariants}
+        initial="initial"
+        animate="visible"
+        exit="exit"
+        transition={containerVariants.transition}
       >
         <div className="topBar">
           <div className="title">{name}</div>
@@ -235,20 +227,23 @@ const Folder = ({
               <div
                 className="item"
                 key={idx}
-                onDoubleClick={() => {
-                  setSelectedProjectId(it.id);
+                onClick={() => {
                   setSelectedProjectIdx(idx);
                 }}
               >
-                <div className="img"></div>
+                <div className="img">
+                  <img
+                    src={`/projectImg/project${it.id}.png`}
+                    alt={`project${it.id}`}
+                  />
+                </div>
                 <div className="desc">
                   <h3 className="content_title">{it.title}</h3>
-                  <p className="content_desc">{it.desc}</p>
+                  {/* <p className="content_desc">{it.desc}</p> */}
                 </div>
               </div>
             ))}
           </div>
-          {/* <Test className="test" onClick={closeFolder}> */}
           <AnimatePresence mode="wait">
             {selectedProjectIdx !== null && (
               <ProjectFolder

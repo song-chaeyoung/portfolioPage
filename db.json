@@ -2,7 +2,7 @@
   "skills": [
     {
       "title": "Language",
-      "x": 35,
+      "x": 40,
       "y": 20,
       "items": [
         {
@@ -29,7 +29,7 @@
     },
     {
       "title": "Frontend",
-      "x": 54,
+      "x": 60,
       "y": 9,
       "items": [
         {
@@ -64,7 +64,7 @@
     },
     {
       "title": "Data & Deployment",
-      "x": 65,
+      "x": 80,
       "y": 30,
       "items": [
         {
@@ -121,31 +121,29 @@
     {
       "id": 0,
       "category": "javascript",
-      "img": ["url/주소", "url/주소", "url/주소"],
       "title": "Oliveyoung-Website",
       "skills": ["Team-Project", "JavaScirpt", "HTML", "CSS", "FIGMA"],
       "links": [
         {
           "type": "github",
-          "link": "url/주소"
+          "link": "https://github.com/song-chaeyoung/Oliveyoung-clone"
         },
         {
           "type": "figma",
-          "link": "url/주소"
+          "link": "https://www.figma.com/design/6tyZLvX74zMtxSOxCz46lz/Oliveyoung-Clone?node-id=0-1&t=oOsknREWkLfVBmwr-1"
         },
         {
           "type": "website",
-          "link": "url/주소"
+          "link": "https://oliveyoung-yesshow.web.app/"
         }
       ],
-      "desc": "웹사이트 설명입니다."
+      "desc": "올리브영 웹사이트의 UI/UX 개선을 목표로 클론 코딩 프로젝트를 진행했습니다. 디자인 및 기획 단계에서 웹사이트의 접근성과 사용자 경험을 고려하여 실제 웹사이트와 유사하게 구현했습니다. 로컬 스토리지를 활용해 장바구니 기능을 추가했으며, Firebase를 이용해 배포하였습니다."
     },
     {
       "id": 1,
       "category": "react",
-      "img": ["url/주소", "url/주소", "url/주소"],
-      "title": "Oliveyoung-Website",
-      "skills": ["Team-Project", "JavaScirpt", "HTML", "CSS", "FIGMA"],
+      "title": "KaKaoStory",
+      "skills": ["Team-Project", "React", "Firebase", "FIGMA"],
       "links": [
         {
           "type": "github",
@@ -171,10 +169,6 @@
       "links": [
         {
           "type": "github",
-          "link": "url/주소"
-        },
-        {
-          "type": "figma",
           "link": "url/주소"
         },
         {

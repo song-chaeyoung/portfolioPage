@@ -1,5 +1,4 @@
 import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
@@ -61,6 +60,7 @@ const Section04 = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const textRef1 = useRef<HTMLParagraphElement>(null);
   const textRef2 = useRef<HTMLParagraphElement>(null);
+  const textRef3 = useRef<HTMLParagraphElement>(null);
   const fadeInRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -70,6 +70,8 @@ const Section04 = () => {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top 40%",
+          // start: "top top",
+          // start: "top+=100 top",
           end: "top top",
           scrub: 1,
           // markers: true,
@@ -91,6 +93,14 @@ const Section04 = () => {
         },
         0
       );
+      startTl.to(
+        textRef3.current,
+        {
+          // duration: 1,
+          translateX: "-75%",
+        },
+        0
+      );
       startTl.to(".computer", {
         // scale: 1.1,
         // ease: "power2.out",
@@ -100,26 +110,24 @@ const Section04 = () => {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: "+=120%",
+          end: "+=200%",
           pin: sectionRef.current,
           pinSpacing: true,
           // end: "bottom top",
-          scrub: 1,
+          scrub: 2,
           // markers: true,
-          onUpdate: (self) => {
-            // console.log("Progress:", self.progress); // 애니메이션 진행 상태 로그
-          },
         },
       });
       computerTl
         .to(".computer", {
           scale: 8.2,
-          y: "90vh", // 뷰포트 높이의 50%로 이동
+          y: "90vh",
           x: "-8vw",
         })
         .to(fadeInRef.current, {
           opacity: 1,
-        });
+        })
+        .to({}, { duration: 2 });
     }
   }, []);
 
@@ -131,6 +139,9 @@ const Section04 = () => {
             <span>SongChaeYoung</span> PortPolio
           </p>
           <p ref={textRef2}>
+            <span>SongChaeYoung</span> PortPolio
+          </p>
+          <p ref={textRef3}>
             <span>SongChaeYoung</span> PortPolio
           </p>
         </div>

@@ -1,307 +1,200 @@
-import React, { useEffect, useState } from "react";
+import React, { KeyboardEvent, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import useTextEffect from "../Hooks/useTextEffect";
+import Matter from "matter-js";
 
 const Container = styled.section`
+  width: 100%;
   height: 100vh;
+  background: #2b2a3a;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: "DungGeunMo";
-  position: relative;
-  .bg {
-    position: absolute;
+  overflow-x: hidden;
+
+  .se1_main {
+    position: relative;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 6rem;
+    .sec1Text {
+      /* width: ; */
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      font-family: DungGeunMo;
+      letter-spacing: -0.25rem;
+      .sec1Text_top {
+        .tipingText {
+          /* width: 27.5rem; */
+          color: var(--main-color);
+          position: relative;
+          font-size: 5.5rem;
+          &::after {
+            content: "";
+            display: block;
+            position: absolute;
+            right: -0.75rem;
+            width: 0.25rem;
+            height: 90%;
+            top: 0;
+            background-color: rgba(255, 255, 255, 0.35);
+            animation: cursorAnimation 1.5s infinite;
+          }
+        }
+        span:nth-child(2) {
+          font-size: 4.25rem;
+        }
+      }
+      .sec1Text_btm {
+        font-size: 5rem;
+      }
+    }
+    .playbtn {
+      font-family: DungGeunMo;
+      font-size: 3rem;
+      color: #fff;
+      background: var(--main-color);
+      /* border: 3px solid; */
+      border-image-outset: 2;
+      padding: 2px 20px;
+      /* box-shadow: inset -4px -4px #006bb3; */
+      /* box-shadow: 6px 6px 0 #fff; */
+      cursor: pointer;
+      transition: all 0.3s;
+      &:hover {
+        transform: translate(4px, 4px);
+      }
+    }
+  }
+
+  .bgIcons {
+    width: 100%;
+    height: calc(100vh - 8rem);
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url("https://i.ibb.co/x3TCktM/645cbb8ec449398255b76326-noise.gif");
-    background-position: 0 0;
-    background-size: auto;
-    pointer-events: none;
-    opacity: 0.1;
-    transition: opacity 0.2s cubic-bezier(0.445, 0.05, 0.55, 0.95);
-    visibility: visible;
-  }
-  .square {
-    border: 5px solid #fff;
-    position: relative;
-  }
-  .square_top {
-    width: 100%;
-    height: 4rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: none;
-    .title_left {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0 10px;
-      img {
-        width: 1.875rem;
-        height: 1.875rem;
-        margin-bottom: 0.375rem;
-      }
-      p {
-        color: var(--main-color);
-        letter-spacing: -0.1rem;
-        font-size: 1.375rem;
-      }
-    }
-    .title_right {
-      display: flex;
-      gap: 0.625rem;
-      span {
-        i {
-          /* width: 30px;
-          height: 30px; */
-        }
-      }
-    }
-  }
-  .square_center {
-    width: 100%;
-    height: 28.125rem;
-    min-height: 28.125rem;
-    border-bottom: none;
-    display: flex;
-    .square_center_left {
-      flex: 1;
-      padding: 0.625rem 0;
-      border-right: 5px solid #fff;
-      display: flex;
-      flex-direction: column;
-      justify-content: end;
-      align-items: center;
-      gap: 0;
-      /* padding-top: 100px; */
-      .circle {
-        position: relative;
-        width: 20rem;
-        height: 20rem;
-        /* border-radius: 50%; */
-        background: var(--main-color);
-        border: 10px solid #fff;
-        box-shadow: 10px 10px 0 #666;
-        .mainImg {
-          width: 22.5rem;
-          position: absolute;
-          top: -12.4%;
-          /* top: -23.5%; */
-          left: 50%;
-          transform: translateX(-50%);
-        }
-        .pixelicon {
-          width: 5rem;
-          position: absolute;
-          top: 14%;
-          left: 54%;
-        }
-        .heart1,
-        .heart2 {
-          position: absolute;
-          width: 3.125rem;
-          &.heart1 {
-            transform: rotate(-20deg);
-            top: -10%;
-            left: 8%;
-          }
-          &.heart2 {
-            transform: rotate(20deg);
-            bottom: 0%;
-            right: -10%;
-          }
-        }
-      }
-      .imgtext {
-        color: var(--main-lightblue);
-        font-size: 2.5rem;
-        letter-spacing: 0.12rem;
-        position: relative;
-        z-index: 3;
-        &::after {
-          width: 100%;
-          content: "HELLO WORLD";
-          position: absolute;
-          color: #fff;
-          top: 0;
-          left: 4px;
-          z-index: -1;
-        }
-      }
-    }
-    .square_center_right {
-      position: relative;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      /* align-items: center; */
-      gap: 2.375rem;
-      padding-left: 2.375rem;
-      .main_title {
-        display: flex;
-        flex-direction: column;
-        gap: 1.875rem;
-        width: fit-content;
-        p:nth-child(1) {
-          letter-spacing: -0.12rem;
-          font-size: 2.5rem;
-          transition: all 0.2s ease;
-          display: flex;
-          gap: 0.625rem;
-          span {
-            transform: rotate(0deg);
-            transition: all 0.3s;
-          }
-          &:hover {
-            span {
-              transform: rotate(30deg);
-            }
-          }
-        }
-        p:nth-child(2),
-        p:nth-child(3) {
-          font-size: 3.125rem;
-          letter-spacing: -0.12rem;
-          span {
-            color: var(--main-color);
-            position: relative;
-            /* margin-right: 10px; */
-            &::after {
-              content: "";
-              display: block;
-              position: absolute;
-              right: -0.75rem;
-              width: 0.25rem;
-              height: 90%;
-              top: 0;
-              background-color: rgba(255, 255, 255, 0.35);
-              animation: cursorAnimation 1.5s infinite;
-            }
-          }
-        }
-      }
-      .main_btn {
-        position: relative;
-        display: flex;
-        align-items: center;
-        background: #fff;
-        border: 2px solid #666;
-        width: 13.75rem;
-        height: 3.75rem;
-        cursor: pointer;
-        transform: translate(0, 0);
-        transition: all 0.2s ease;
-        box-shadow: 6px 6px 0 #333;
-        /* z-index: 1; */
-        /* z-index: 0; */
-        > p {
-          flex: 14;
-          color: #000;
-          text-align: center;
-          font-family: "DungGeunMo";
-          font-size: 1.875rem;
-          width: 100%;
-          letter-spacing: -0.06rem;
-        }
-        > div {
-          flex: 6;
-          width: 3.75rem;
-          height: 100%;
-          background: var(--main-color);
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          img {
-            height: 3rem;
-            transform: rotate(-90deg);
-          }
-        }
-        &:hover {
-          transform: translate(4px, 4px);
-        }
-      }
-      .clickiconConatiner {
-        position: absolute;
-        bottom: 2.5rem;
-        right: 2.5rem;
-        display: flex;
-        align-items: center;
-        gap: 0.625rem;
-        .icontext {
-          display: flex;
-          align-items: center;
-          gap: 0.625rem;
-          margin-top: 0.625rem;
-          p {
-            font-size: 1.5rem;
-          }
-          img {
-            height: 1.875rem;
-            transform: rotate(-90deg);
-          }
-        }
-        .clickIcon {
-          width: 4.375rem;
-          height: 4.375rem;
-          cursor: pointer;
-          position: relative;
-          z-index: 100;
-          img {
-            width: 100%;
-            height: 100%;
-          }
-          &::before {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 12.5rem;
-            height: 12.5rem;
-            background: var(--main-color);
-            border-radius: 50%;
-            display: none;
-            /* z-index: -1; */
-          }
-          &:hover {
-            &::before {
-              display: block;
-            }
-          }
-        }
-      }
-    }
-  }
-  .square_btm {
-    width: 100%;
-    height: 5.5rem;
-    overflow: hidden;
-    .textcontainer {
+    position: absolute;
+    .clouds {
+      width: 100%;
       height: 100%;
-      white-space: nowrap;
-      display: flex;
-      /* justify-content: center; */
-      align-items: center;
-      gap: 3.125rem;
-      animation: flowText 10s linear infinite;
-      > div {
+      position: absolute;
+      > img {
+        position: absolute;
+        transform: scale(0.7);
+        animation: cloudFlow 4s ease-in-out alternate infinite;
+        &:nth-child(1) {
+          top: 20%;
+          left: 10%;
+        }
+        &:nth-child(2) {
+          top: 30%;
+          left: 85%;
+          animation-delay: 0.5s;
+        }
+        &:nth-child(3) {
+          top: 45%;
+          left: 5%;
+          animation-delay: 1s;
+        }
+        &:nth-child(4) {
+          top: 55%;
+          left: 80%;
+          animation-delay: 1.5s;
+        }
+      }
+    }
+    .blocks {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      .block {
+        position: absolute;
+        width: 12.5rem;
+        height: fit-content;
+        /* top: -100%; */
+        &:nth-child(1) {
+          top: 60%;
+          left: 10%;
+        }
+        &:nth-child(2) {
+          top: 75%;
+          left: 75%;
+          /* right: 5%; */
+        }
+        left: 0;
+        .lightGreen {
+          width: 100%;
+          height: 0.875rem;
+          background: #90c35c;
+        }
+        .green {
+          width: 100%;
+          height: 1.5rem;
+          background: #50b146;
+        }
+        .brown {
+          width: 100%;
+          height: 3rem;
+          background: #673832;
+        }
+      }
+    }
+    .pixelicons {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      > img {
+        position: absolute;
+        bottom: 0;
+        left: 10%;
+        width: 6rem;
+      }
+      .iconArrow {
+        position: absolute;
+        bottom: 5rem;
+        left: 15%;
         display: flex;
         align-items: center;
         gap: 1rem;
+        animation: movemeTextAni 1s infinite alternate;
         img {
-          height: 2.25rem;
+          width: 2rem;
+          transform: rotate(45deg);
         }
         p {
-          font-size: 2.125rem;
-          color: var(--main-color);
-          letter-spacing: 0.08rem;
+          font-size: 2rem;
+          font-family: DungGeunMo;
+          padding-bottom: 2rem;
+          text-transform: uppercase;
         }
       }
+    }
+  }
+
+  .sec1btm {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 8rem;
+    display: flex;
+    flex-direction: column;
+    .lightGreen {
+      width: 100%;
+      height: 1.5rem;
+      background: #90c35c;
+    }
+    .green {
+      width: 100%;
+      height: 2rem;
+      background: #50b146;
+    }
+    .brown {
+      width: 100%;
+      height: 4.5rem;
+      background: #673832;
     }
   }
 
@@ -317,12 +210,22 @@ const Container = styled.section`
       opacity: 0;
     }
   }
-  @keyframes flowText {
+
+  @keyframes cloudFlow {
     0% {
-      transform: translateX(5%);
+      transform: scale(0.7) translateX(0);
     }
     100% {
-      transform: translateX(-89%);
+      transform: scale(0.7) translateX(-50%);
+    }
+  }
+
+  @keyframes movemeTextAni {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(10%);
     }
   }
 `;
@@ -331,129 +234,294 @@ interface onMoveBox {
   onMoveBox: () => void;
 }
 
-const Section01 = ({ onMoveBox }: onMoveBox) => {
-  const textArray = ["프론트엔드", "항상 노력하는", "REACT", "공부하는"];
-  const displayText = useTextEffect({ texts: textArray });
+interface Position {
+  x: number;
+  y: number;
+}
 
-  useEffect(() => {}, []);
+const Section01 = ({ onMoveBox }: onMoveBox) => {
+  const textArray = ["프론트엔드", "노력하는", "REACT", "공부하는"];
+  const displayText = useTextEffect({ texts: textArray });
+  const [moveText, setMoveText] = useState<boolean>(true);
+
+  const iconRef = useRef<HTMLDivElement>(null);
+  const sceneRef = useRef<HTMLDivElement>(null);
+  const engineRef = useRef<Matter.Engine>();
+  const blockRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  const [position, setPosition] = useState<Position>({ x: 0, y: 0 });
+  const [isLeft, setIsLeft] = useState<boolean>(false);
+  const MOVE_AMOUNT = 2;
+  const JUMP_HEIGHT = 50; // 점프 높이 (px)
+
+  const handleCharter = (e: KeyboardEvent<HTMLDivElement>) => {
+    setMoveText(false);
+    const vwToPx = (vw: number) => (window.innerWidth * vw) / 100;
+    if (e.key === "Alt") {
+      setPosition((prev) => ({ ...prev, y: -JUMP_HEIGHT }));
+      setTimeout(() => {
+        setPosition((prev) => ({ ...prev, y: 0 }));
+      }, 300);
+    }
+
+    switch (e.key) {
+      case "ArrowLeft":
+        setIsLeft(true);
+        setPosition((prev: Position) => ({
+          ...prev,
+          x: Math.max(-vwToPx(10), prev.x - vwToPx(MOVE_AMOUNT)),
+        }));
+        break;
+      case "ArrowRight":
+        setIsLeft(false);
+        setPosition((prev: Position) => ({
+          ...prev,
+          x: Math.min(vwToPx(70), prev.x + vwToPx(MOVE_AMOUNT)),
+        }));
+        break;
+    }
+  };
+
+  useEffect(() => {
+    if (iconRef.current) {
+      iconRef.current.focus();
+    }
+  }, []);
+
+  useEffect(() => {
+    const { Engine, Render, World, Bodies, Runner } = Matter;
+    const engine = Engine.create();
+    engineRef.current = engine;
+
+    const render = Render.create({
+      element: sceneRef.current!,
+      engine: engine,
+      options: {
+        width: sceneRef.current!.clientWidth,
+        height: window.innerHeight,
+        wireframes: false,
+        background: "transparent",
+      },
+    });
+
+    blockRefs.current.forEach((block) => {
+      if (!block) return;
+
+      const rect = block.getBoundingClientRect();
+      const blockBody = Bodies.rectangle(
+        rect.x + rect.width / 2,
+        rect.y + rect.height / 2,
+        rect.width,
+        rect.height,
+        {
+          isStatic: true,
+          render: { fillStyle: "transparent" },
+        }
+      );
+      World.add(engine.world, blockBody);
+    });
+
+    const walls = [
+      // 바닥
+      Bodies.rectangle(
+        window.innerWidth / 2,
+        window.innerHeight,
+        window.innerWidth,
+        260,
+        {
+          isStatic: true,
+          render: { fillStyle: "transparent" },
+        }
+      ),
+      // 왼쪽 벽
+      Bodies.rectangle(0, window.innerHeight / 2, 60, window.innerHeight, {
+        isStatic: true,
+        render: { fillStyle: "transparent" },
+      }),
+      // 오른쪽 벽
+      Bodies.rectangle(
+        window.innerWidth,
+        window.innerHeight / 2,
+        60,
+        window.innerHeight,
+        {
+          isStatic: true,
+          render: { fillStyle: "transparent" },
+        }
+      ),
+    ];
+
+    World.add(engine.world, walls);
+
+    // const createStar = () => {
+    //   const star = Bodies.circle(
+    //     Math.random() * (window.innerWidth - 100) + 50, // 벽 안쪽에서만 생성
+    //     -30,
+    //     15,
+    //     {
+    //       render: {
+    //         fillStyle: "#FFD700",
+    //       },
+    //       restitution: 0.3, // 탄성 감소
+    //       friction: 0.1,
+    //       density: 0.001, // 밀도 감소
+    //     }
+    //   );
+    //   World.add(engine.world, star);
+    // };
+
+    // const createStar = () => {
+    //   const star = Bodies.circle(
+    //     Math.random() * (window.innerWidth - 100) + 50,
+    //     -30,
+    //     15,
+    //     {
+    //       render: {
+    //         fillStyle: 'transparent',
+    //         element: document.createElement('i'),  // element를 render 안으로
+    //         visible: true
+    //       },
+    //       restitution: 0.3,
+    //       friction: 0.1,
+    //       density: 0.001
+    //     }
+    //   );
+
+    //   // element에 클래스 추가
+    //   if (star.render.element instanceof HTMLElement) {
+    //     star.render.element.className = 'nes-icon is-large star';
+    //   }
+
+    //   World.add(engine.world, star);
+    // };
+
+    const createStar = () => {
+      const star = Bodies.circle(
+        Math.random() * (window.innerWidth - 100) + 50,
+        -30,
+        15,
+        {
+          render: {
+            fillStyle: "#FFD700", // 일단 기본 색상으로
+            visible: true,
+          },
+          restitution: 0.3,
+          friction: 0.1,
+          density: 0.001,
+        }
+      );
+
+      World.add(engine.world, star);
+    };
+
+    const starInterval = setInterval(createStar, 5000);
+
+    // Engine.run(engine);
+    const runner = Runner.create();
+    Runner.run(runner, engine);
+    Render.run(render);
+
+    return () => {
+      clearInterval(starInterval);
+      Render.stop(render);
+      World.clear(engine.world, false);
+      Engine.clear(engine);
+      render.canvas.remove();
+    };
+  }, []);
 
   return (
     <Container>
-      <div className="bg"></div>
-      <div className="inner">
-        <div className="square_top square">
-          <div className="title_left">
-            {/* <img src="/pixelart/pixelicon.png" alt="pixelicon" /> */}
-            <p>프론트엔드 송채영 포트폴리오</p>
+      <div
+        ref={sceneRef}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0, // 추가
+          bottom: 0,
+          width: "100%",
+          height: "100%",
+          pointerEvents: "none",
+          zIndex: 100, // 필요에 따라 조정
+        }}
+      />
+      <article className="se1_main">
+        <div className="sec1Text">
+          <div className="sec1Text_top">
+            <span className="tipingText">{displayText}</span>
+            <span> 개발자</span>
           </div>
-          <div className="title_right">
-            <span>
-              <i className="nes-icon github is-small"></i>
-            </span>
-            <span></span>
-            <span></span>
-          </div>
-        </div>
-        <div className="square_center square">
-          <div className="square_center_left">
-            <div className="circle">
-              <img
-                className="mainImg"
-                src="/pixelart/mainImg.png"
-                alt="mainImg"
-              />
-              <img
-                className="pixelicon"
-                src="/pixelart/pixelicon.png"
-                alt="pixelicon"
-              />
-              {/* <img
-                className="heart1"
-                src="/pixelart/blueheart.gif"
-                alt="blueheart"
-              />
-              <img
-                className="heart2"
-                src="/pixelart/blueheart.gif"
-                alt="blueheart"
-              /> */}
-            </div>
-            <div className="imgtext">
-              <p>HELLO WORLD</p>
-            </div>
-          </div>
-          <div className="square_center_right">
-            <div className="main_title">
-              <p>
-                안녕하세요 <span>👋</span>
-              </p>
-              <p>
-                <span>{displayText}</span> 개발자
-              </p>
-              <p>송채영입니다.</p>
-            </div>
-            <div className="main_btn" onClick={() => onMoveBox()}>
-              <p>GAME START</p>
-              <div>
-                <img src="/pixelart/arr.png" alt="arrow" />
-              </div>
-            </div>
-            <div className="clickiconConatiner">
-              <div className="icontext">
-                <p>Click!</p>
-                <img src="/pixelart/arr.png" alt="arrow" />
-              </div>
-              <div className="clickIcon">
-                <img src="/pixelart/meicon.png" alt="meicon " />
-              </div>
-            </div>
+          <div className="sec1Text_btm">
+            <span>송채영 포트폴리오</span>
           </div>
         </div>
-        <div className="square_btm square">
-          <div className="textcontainer">
-            <div>
-              <img src="/pixelart/htmlicon.png" alt="htmlicon"></img>
-              <p>HTML</p>
-            </div>
-            <div>
-              <img src="/pixelart/cssicon.png" alt="cssicon"></img>
-              <p>CSS</p>
-            </div>
-            <div>
-              <img src="/pixelart/jsicon.png" alt="jsicon"></img>
-              <p>JavaScript</p>
-            </div>
-            <div>
-              <img src="/pixelart/reacticon.png" alt="reacticon"></img>
-              <p>React</p>
-            </div>
-            <div>
-              <img src="/pixelart/tsicon.png" alt="htmlicon"></img>
-              <p>TypeScript</p>
-            </div>
-            <div>
-              <img src="/pixelart/htmlicon.png" alt="htmlicon"></img>
-              <p>HTML</p>
-            </div>
-            <div>
-              <img src="/pixelart/cssicon.png" alt="cssicon"></img>
-              <p>CSS</p>
-            </div>
-            <div>
-              <img src="/pixelart/jsicon.png" alt="jsicon"></img>
-              <p>JavaScript</p>
-            </div>
-            <div>
-              <img src="/pixelart/reacticon.png" alt="reacticon"></img>
-              <p>React</p>
-            </div>
-            <div>
-              <img src="/pixelart/tsicon.png" alt="htmlicon"></img>
-              <p>TypeScript</p>
-            </div>
+        {/* <button className="playbtn nes-btn is-primary">PLAY</button> */}
+        <div
+          className="playbtn nes-container is-rounded is-dark"
+          onClick={onMoveBox}
+        >
+          PLAY
+        </div>
+      </article>
+      <article className="bgIcons">
+        <div className="clouds">
+          <img src="/pixelart/clound0.png" alt="clound" />
+          <img src="/pixelart/clound1.png" alt="clound" />
+          <img src="/pixelart/clound2.png" alt="clound" />
+          <img src="/pixelart/clound3.png" alt="clound" />
+        </div>
+        <div className="blocks">
+          <div className="block" ref={(el) => (blockRefs.current[0] = el)}>
+            <div className="lightGreen"></div>
+            <div className="green"></div>
+            <div className="brown"></div>
+          </div>
+          <div className="block" ref={(el) => (blockRefs.current[1] = el)}>
+            <div className="lightGreen"></div>
+            <div className="green"></div>
+            <div className="brown"></div>
           </div>
         </div>
-      </div>
+        <div
+          className="pixelicons"
+          ref={iconRef}
+          tabIndex={0}
+          onKeyDown={handleCharter}
+          style={{
+            outline: "none",
+          }}
+        >
+          {moveText && (
+            <div className="iconArrow">
+              <img src="/pixelart/arr.png" alt="arrow" />
+              <p>move me!</p>
+            </div>
+          )}
+
+          <img
+            style={{
+              transform: `translate(${position.x}px, ${position.y}px) scaleX(${
+                isLeft ? -1 : 1
+              }) `,
+              transformOrigin: "center",
+              transition: "transform 0.2s ease",
+              outline: "none",
+            }}
+            src="/pixelart/pixelicon.png"
+            alt="pixelicon"
+          />
+        </div>
+        <div className="dropdownStar">
+          <i className="nes-icon is-large star"></i>
+        </div>
+      </article>
+
+      <article className="sec1btm">
+        <div className="lightGreen"></div>
+        <div className="green"></div>
+        <div className="brown"></div>
+      </article>
     </Container>
   );
 };
