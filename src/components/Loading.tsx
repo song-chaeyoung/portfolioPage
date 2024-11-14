@@ -1,8 +1,9 @@
 import React from "react";
 import "nes.css/css/nes.min.css";
 import styled from "styled-components";
+import { AnimatePresence, motion } from "framer-motion";
 
-const Container = styled.div`
+const Container = styled(motion.div)`
   background: #212429;
   color: #fff;
   width: 100%;
@@ -109,25 +110,38 @@ const Container = styled.div`
 
 const Loading = () => {
   return (
-    <Container>
-      <p>Loading...</p>
-      <div className="nes-container is-rounded is-dark loading_container">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-    </Container>
+    <AnimatePresence>
+      <Container
+        initial={{ opacity: 1 }}
+        animate={{ opacity: 1 }}
+        exit={{
+          scaleY: 0,
+          transition: {
+            duration: 1,
+            ease: [0.22, 1, 0.36, 1],
+            transformOrigin: "top", //위에서 효과가 시작됩니다.
+          },
+        }}
+      >
+        <p>Loading...</p>
+        <div className="nes-container is-rounded is-dark loading_container">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </Container>
+    </AnimatePresence>
   );
 };
 

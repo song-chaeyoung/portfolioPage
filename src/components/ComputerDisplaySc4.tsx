@@ -4,10 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import { myData } from "../api";
 import { Project } from "../type";
 import { AnimatePresence } from "framer-motion";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import TextFolder from "./TextFolder";
 import { motion } from "framer-motion";
+
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -111,16 +110,12 @@ const Container = styled.div`
         position: absolute;
         left: 1.75rem;
         bottom: 2.25rem;
-        /* width: 15rem; */
-        /* height: 21rem; */
         background: silver;
         box-shadow: inset -2px -2px #0a0a0a, inset 2px 2px #fff,
           inset -3px -3px grey, inset 3px 3px #dfdfdf;
-        /* padding: 0.5rem; */
         padding: 0.15rem;
         li {
           display: flex;
-          /* flex-direction: column; */
           align-items: center;
           gap: 0.5rem;
           width: 15rem;
@@ -128,7 +123,6 @@ const Container = styled.div`
           color: #000;
           img {
             width: 2.5rem;
-            /* height: 1.25rem; */
           }
           &:hover {
             background: var(--main-color);
@@ -171,6 +165,17 @@ const Container = styled.div`
       padding: 0.375rem 1rem;
       font-size: 1.25rem;
       color: #000;
+    }
+  }
+
+  @media (max-width: 768px) {
+    display: flex; // Flexbox 사용
+    flex-direction: column;
+    .icon_container {
+      padding: 8rem 1rem 0;
+    }
+    .btmBar {
+      display: none;
     }
   }
 `;

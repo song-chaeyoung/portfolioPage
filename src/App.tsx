@@ -47,8 +47,8 @@ const GlobalStyle = createGlobalStyle`
   }
 
   a {
-    color: inherit;
-    text-decoration: none;
+    color: inherit !important;
+    text-decoration: none !important;
   }
 
   h1, h2, h3, h4, h5, h6, p {
@@ -93,6 +93,10 @@ const GlobalStyle = createGlobalStyle`
     html {
       font-size: 70%;
     }
+    .inner {
+      width: 100%;
+      padding: 0 1rem;
+    }
   }
 `;
 
@@ -122,6 +126,8 @@ const Main = styled.main`
   }
 `;
 
+export const mobileSizeContext = React.createContext(false);
+
 const App = () => {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -130,9 +136,65 @@ const App = () => {
     }, 4000);
   }, []);
 
+  const [mobileSize, setMobileSize] = useState(false);
+
+  const updateSize = () => {
+    if (window.innerWidth <= 768) setMobileSize(true);
+    else setMobileSize(false);
+  };
+
+  useEffect(() => {
+    window.innerWidth <= 768 ? setMobileSize(true) : setMobileSize(false);
+    window.addEventListener("resize", updateSize);
+    return () => {
+      window.removeEventListener("resize", updateSize);
+    };
+  }, []);
+
+  const section1 = useRef<HTMLElement>(null);
   const section2 = useRef<HTMLElement>(null);
-  const onMoveBox = () => {
-    section2.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  const section3 = useRef<HTMLDivElement>(null);
+  const section4 = useRef<HTMLDivElement>(null);
+
+  const onSection1 = () => {
+    section1.current?.scrollIntoView({ block: "start" });
+    // section1.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+  const onSection2 = () => {
+    section2.current?.scrollIntoView({ block: "start" });
+    // section2.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+  const onSection3 = () => {
+    if (section3.current) {
+      // ScrollTrigger 초기화
+      const st = ScrollTrigger.getById("section3");
+      if (st) {
+        st.scroll(0); // 스크롤 위치 초기화
+        st.refresh(); // ScrollTrigger 새로고침
+      }
+
+      // Container 위치 초기화
+      const container = section3.current.querySelector(
+        'div[class*="Container"]'
+      );
+      if (container) {
+        gsap.set(container, {
+          // gsap.to 대신 gsap.set 사용
+          x: 0,
+          overwrite: true,
+        });
+      }
+
+      // 섹션으로 스크롤
+      section3.current.scrollIntoView({ block: "start" });
+    }
+
+    // section3.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const onSection4 = () => {
+    section4.current?.scrollIntoView({ block: "start" });
+    // section4.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const allSection = useRef<HTMLElement>(null);
@@ -158,72 +220,79 @@ const App = () => {
     };
   }, []);
 
-  useEffect(() => {
-    let isAnimating = false;
+  // useEffect(() => {
+  //   let isAnimating = false;
 
-    const wheelHandler = (e: WheelEvent) => {
-      const { deltaY } = e;
-      const scrollY = window.scrollY;
-      const pageHeight = window.innerHeight;
+  //   const wheelHandler = (e: WheelEvent) => {
+  //     const { deltaY } = e;
+  //     const scrollY = window.scrollY;
+  //     const pageHeight = window.innerHeight;
 
-      if (isAnimating) return;
+  //     if (isAnimating) return;
 
-      if (scrollY >= pageHeight && scrollY < pageHeight * 2 && deltaY > 0) {
-        // e.preventDefault();
-        isAnimating = true;
-        window.scrollTo({
-          top: pageHeight * 2,
-          behavior: "smooth",
-        });
+  //     if (scrollY >= pageHeight && scrollY < pageHeight * 2 && deltaY > 0) {
+  //       // e.preventDefault();
+  //       isAnimating = true;
+  //       window.scrollTo({
+  //         top: pageHeight * 2,
+  //         behavior: "smooth",
+  //       });
 
-        setTimeout(() => {
-          isAnimating = false;
-        }, 1000);
-      } else if (
-        scrollY >= pageHeight * 2 &&
-        scrollY < pageHeight * 3 &&
-        deltaY < 0
-      ) {
-        // e.preventDefault();
-        isAnimating = true;
-        window.scrollTo({
-          top: pageHeight,
-          left: 0,
-          behavior: "smooth",
-        });
-        setTimeout(() => {
-          isAnimating = false;
-        }, 1000);
-      }
-    };
-    const allSectionCurrent = allSection.current;
+  //       setTimeout(() => {
+  //         isAnimating = false;
+  //       }, 1000);
+  //     } else if (
+  //       scrollY >= pageHeight * 2 &&
+  //       scrollY < pageHeight * 3 &&
+  //       deltaY < 0
+  //     ) {
+  //       // e.preventDefault();
+  //       isAnimating = true;
+  //       window.scrollTo({
+  //         top: pageHeight,
+  //         left: 0,
+  //         behavior: "smooth",
+  //       });
+  //       setTimeout(() => {
+  //         isAnimating = false;
+  //       }, 1000);
+  //     }
+  //   };
+  //   const allSectionCurrent = allSection.current;
 
-    allSectionCurrent?.addEventListener("wheel", wheelHandler, {
-      passive: false,
-    });
+  //   allSectionCurrent?.addEventListener("wheel", wheelHandler, {
+  //     passive: false,
+  //   });
 
-    return () => {
-      allSectionCurrent?.removeEventListener("wheel", wheelHandler);
-    };
-  }, [loading]);
+  //   return () => {
+  //     allSectionCurrent?.removeEventListener("wheel", wheelHandler);
+  //   };
+  // }, [loading]);
 
   return (
     <>
       <GlobalStyle />
-      {loading ? (
-        <Loading />
-      ) : (
-        <AppContainer>
-          <Header />
-          <Main ref={allSection}>
-            <Section01 onMoveBox={onMoveBox} />
-            <Section02 ref={section2} />
-            <Section03 />
-            <Section04 />
-            <Section05 />
-          </Main>
-        </AppContainer>
-      )}
+      <mobileSizeContext.Provider value={mobileSize}>
+        {loading ? (
+          <Loading />
+        ) : (
+          <AppContainer>
+            <Header
+              onSection1={onSection1}
+              onSection2={onSection2}
+              onSection3={onSection3}
+              onSection4={onSection4}
+            />
+            <Main ref={allSection}>
+              <Section01 onMoveBox={onSection2} ref={section1} />
+              <Section02 ref={section2} />
+              <Section03 ref={section3} />
+              <Section04 ref={section4} />
+              <Section05 />
+            </Main>
+          </AppContainer>
+        )}
+      </mobileSizeContext.Provider>
     </>
   );
 };

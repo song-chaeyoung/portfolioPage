@@ -1,6 +1,6 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import React, { useEffect, useRef } from "react";
+import React, { forwardRef, useEffect, useRef } from "react";
 import styled from "styled-components";
 import ComputerDisplaySc4 from "../components/ComputerDisplaySc4";
 
@@ -11,8 +11,6 @@ const Container = styled.section`
   z-index: 1;
   overflow: hidden;
   .bgText {
-    /* display: flex;
-    flex-direction: column; */
     p {
       font-size: 15rem;
       text-transform: uppercase;
@@ -56,7 +54,7 @@ const ComputerDisplay = styled.div`
   z-index: 100;
 `;
 
-const Section04 = () => {
+const Section04 = (_: any, ref: React.ForwardedRef<HTMLDivElement>) => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const textRef1 = useRef<HTMLParagraphElement>(null);
   const textRef2 = useRef<HTMLParagraphElement>(null);
@@ -132,28 +130,26 @@ const Section04 = () => {
   }, []);
 
   return (
-    <>
-      <Container className="section4" ref={sectionRef}>
-        <div className="bgText">
-          <p ref={textRef1}>
-            <span>SongChaeYoung</span> PortPolio
-          </p>
-          <p ref={textRef2}>
-            <span>SongChaeYoung</span> PortPolio
-          </p>
-          <p ref={textRef3}>
-            <span>SongChaeYoung</span> PortPolio
-          </p>
-        </div>
-        <div className="computer">
-          <img src="/pixelart/computer.svg" alt="computer" />
-        </div>
-        <ComputerDisplay className="fadeInComponent" ref={fadeInRef}>
-          <ComputerDisplaySc4 />
-        </ComputerDisplay>
-      </Container>
-    </>
+    <Container className="section4" ref={sectionRef}>
+      <div className="bgText" ref={ref}>
+        <p ref={textRef1}>
+          <span>SongChaeYoung</span> PortPolio
+        </p>
+        <p ref={textRef2}>
+          <span>SongChaeYoung</span> PortPolio
+        </p>
+        <p ref={textRef3}>
+          <span>SongChaeYoung</span> PortPolio
+        </p>
+      </div>
+      <div className="computer">
+        <img src="/pixelart/computer.svg" alt="computer" />
+      </div>
+      <ComputerDisplay className="fadeInComponent" ref={fadeInRef}>
+        <ComputerDisplaySc4 />
+      </ComputerDisplay>
+    </Container>
   );
 };
 
-export default Section04;
+export default forwardRef<HTMLDivElement, any>(Section04);

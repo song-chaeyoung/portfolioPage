@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Project } from "../type";
 import { motion } from "framer-motion";
 
-const Container = styled(motion.div)`
+const Container = styled(motion.div)<{ $zIndex: number }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -20,10 +20,10 @@ const Container = styled(motion.div)`
   justify-content: center;
   align-items: center;
   overflow: hidden;
-
+  z-index: ${({ $zIndex }) => $zIndex};
   .project_topBar {
     position: fixed;
-    top: 2px;
+    top: 1px;
     left: 1px;
     width: calc(100% - 4px);
     padding: 0.25rem 0.5rem;
@@ -149,16 +149,51 @@ const Container = styled(motion.div)`
       }
     }
   }
+
+  @media (max-width: 768px) {
+    top: auto;
+    width: 100%;
+    height: calc(100vh - 55px);
+    bottom: 0;
+    margin-top: auto;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    .project_topBar {
+      position: absolute;
+      font-size: 1.75rem;
+      .title {
+        font-size: 1.75rem;
+        /* padding: 0.5rem ; */
+      }
+    }
+    .backBtn {
+      left: 1rem;
+    }
+    .project_contents {
+      flex-direction: column;
+      .project_img {
+        width: 90vw;
+        min-width: 10rem;
+      }
+      .project_desc {
+        width: 100%;
+      }
+    }
+  }
 `;
 
 interface ProjectFolderProps {
   data: Project;
   // setSelectedProjectId: React.Dispatch<React.SetStateAction<number | null>>;
   setSelectedProjectIdx: React.Dispatch<React.SetStateAction<number | null>>;
-  // isOpen: boolean;
+  zIndex: number;
 }
 
-const ProjectFolder = ({ data, setSelectedProjectIdx }: ProjectFolderProps) => {
+const ProjectFolder = ({
+  data,
+  setSelectedProjectIdx,
+  zIndex,
+}: ProjectFolderProps) => {
   const tesetRef = useRef<HTMLDivElement>(null);
 
   const handleClose = (e: React.MouseEvent) => {
@@ -205,6 +240,7 @@ const ProjectFolder = ({ data, setSelectedProjectIdx }: ProjectFolderProps) => {
 
   return (
     <Container
+      $zIndex={zIndex}
       ref={tesetRef}
       // onWheel={(e: React.WheelEvent<HTMLDivElement>) => {
       //   if (!isOpen) {

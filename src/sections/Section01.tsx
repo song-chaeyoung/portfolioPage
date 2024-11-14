@@ -1,7 +1,16 @@
-import React, { KeyboardEvent, useEffect, useRef, useState } from "react";
+import React, {
+  forwardRef,
+  KeyboardEvent,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import styled from "styled-components";
 import useTextEffect from "../Hooks/useTextEffect";
 import Matter from "matter-js";
+import { mobileSizeContext } from "../App";
 
 const Container = styled.section`
   width: 100%;
@@ -20,6 +29,11 @@ const Container = styled.section`
     align-items: center;
     gap: 2rem;
     margin-bottom: 6rem;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     .sec1Text {
       /* width: ; */
       display: flex;
@@ -29,7 +43,6 @@ const Container = styled.section`
       letter-spacing: -0.25rem;
       .sec1Text_top {
         .tipingText {
-          /* width: 27.5rem; */
           color: var(--main-color);
           position: relative;
           font-size: 5.5rem;
@@ -47,10 +60,12 @@ const Container = styled.section`
         }
         span:nth-child(2) {
           font-size: 4.25rem;
+          text-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
         }
       }
       .sec1Text_btm {
         font-size: 5rem;
+        text-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
       }
     }
     .playbtn {
@@ -65,6 +80,11 @@ const Container = styled.section`
       /* box-shadow: 6px 6px 0 #fff; */
       cursor: pointer;
       transition: all 0.3s;
+      pointer-events: auto;
+      user-select: auto;
+      -webkit-user-select: auto;
+      -moz-user-select: auto;
+      -ms-user-select: auto;
       &:hover {
         transform: translate(4px, 4px);
       }
@@ -82,16 +102,17 @@ const Container = styled.section`
       height: 100%;
       position: absolute;
       > img {
+        width: auto;
         position: absolute;
         transform: scale(0.7);
         animation: cloudFlow 4s ease-in-out alternate infinite;
         &:nth-child(1) {
           top: 20%;
-          left: 10%;
+          left: 20%;
         }
         &:nth-child(2) {
           top: 30%;
-          left: 85%;
+          right: 5%;
           animation-delay: 0.5s;
         }
         &:nth-child(3) {
@@ -101,8 +122,9 @@ const Container = styled.section`
         }
         &:nth-child(4) {
           top: 55%;
-          left: 80%;
+          right: 15%;
           animation-delay: 1.5s;
+          width: auto;
         }
       }
     }
@@ -114,6 +136,7 @@ const Container = styled.section`
         position: absolute;
         width: 12.5rem;
         height: fit-content;
+        /* box-shadow: 4px 4px 10px 0 rgba(0, 0, 0, 0.25); */
         /* top: -100%; */
         &:nth-child(1) {
           top: 60%;
@@ -121,10 +144,10 @@ const Container = styled.section`
         }
         &:nth-child(2) {
           top: 75%;
-          left: 75%;
+          right: 20%;
           /* right: 5%; */
         }
-        left: 0;
+        /* left: 0; */
         .lightGreen {
           width: 100%;
           height: 0.875rem;
@@ -228,9 +251,72 @@ const Container = styled.section`
       transform: translateY(10%);
     }
   }
+
+  @media (max-width: 768px) {
+    .sec1Text {
+      .sec1Text_top {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .tipingText {
+          /* font-size: 3rem; */
+          height: 5rem;
+          font-size: 4.5rem !important;
+        }
+        span:nth-child(2) {
+          font-size: 4.25rem !important;
+        }
+      }
+      .sec1Text_btm {
+        text-align: center;
+        font-size: 4.5rem !important;
+      }
+    }
+
+    .bgIcons {
+      .clouds {
+        > img {
+          &:nth-child(1) {
+            top: 15%;
+            left: 35% !important;
+          }
+          &:nth-child(2) {
+            display: none;
+          }
+          &:nth-child(3) {
+            /* top: 45%; */
+            left: 10%;
+          }
+          &:nth-child(4) {
+            display: none;
+          }
+        }
+      }
+      .blocks {
+        .block {
+          width: 8rem;
+
+          &:nth-child(1) {
+            left: 5%;
+          }
+          &:nth-child(2) {
+            right: 5%;
+          }
+        }
+      }
+      .pixelicons {
+        > img {
+          width: 8rem;
+        }
+        .iconArrow {
+          display: none;
+        }
+      }
+    }
+  }
 `;
 
-interface onMoveBox {
+interface Section01Props {
   onMoveBox: () => void;
 }
 
@@ -239,23 +325,41 @@ interface Position {
   y: number;
 }
 
-const Section01 = ({ onMoveBox }: onMoveBox) => {
+const stars = [
+  {
+    name: "dropdownStar",
+    imagePath: "/pixelart/dropdownstar.gif",
+    size: 42,
+    radius: 42 / 2,
+  },
+];
+
+const Section01 = (
+  { onMoveBox }: Section01Props,
+  ref: React.ForwardedRef<HTMLElement>
+) => {
+  const mobileSize = useContext(mobileSizeContext);
   const textArray = ["프론트엔드", "노력하는", "REACT", "공부하는"];
   const displayText = useTextEffect({ texts: textArray });
   const [moveText, setMoveText] = useState<boolean>(true);
-
+  // console.log(mobileSize);
   const iconRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
   const engineRef = useRef<Matter.Engine>();
   const blockRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const myIconRef = useRef<HTMLImageElement>(null);
+  const iconBodyRef = useRef<Matter.Body | null>(null);
+  const dropdownStarRef = useRef<HTMLDivElement>(null);
 
   const [position, setPosition] = useState<Position>({ x: 0, y: 0 });
   const [isLeft, setIsLeft] = useState<boolean>(false);
   const MOVE_AMOUNT = 2;
   const JUMP_HEIGHT = 50; // 점프 높이 (px)
 
-  const handleCharter = (e: KeyboardEvent<HTMLDivElement>) => {
-    setMoveText(false);
+  const handleCharter = useCallback((e: KeyboardEvent<HTMLDivElement>) => {
+    // setMoveText(false);
+    if (moveText) setMoveText(false);
+
     const vwToPx = (vw: number) => (window.innerWidth * vw) / 100;
     if (e.key === "Alt") {
       setPosition((prev) => ({ ...prev, y: -JUMP_HEIGHT }));
@@ -280,7 +384,7 @@ const Section01 = ({ onMoveBox }: onMoveBox) => {
         }));
         break;
     }
-  };
+  }, []);
 
   useEffect(() => {
     if (iconRef.current) {
@@ -321,6 +425,37 @@ const Section01 = ({ onMoveBox }: onMoveBox) => {
       World.add(engine.world, blockBody);
     });
 
+    if (myIconRef.current) {
+      const iconRect = myIconRef.current.getBoundingClientRect();
+      const iconBody = Bodies.rectangle(
+        iconRect.x + iconRect.width / 2, // 이미지의 실제 위치 사용
+        window.innerHeight - 120,
+        96,
+        96,
+        // iconRect.width,
+        // iconRect.height,
+        {
+          render: {
+            fillStyle: "transparent",
+            visible: true, // 디버깅용
+          },
+          friction: 0.05,
+          restitution: 0.2,
+          density: 0.001,
+          isStatic: false, // 중력 영향을 받도록
+          collisionFilter: {
+            category: 0x0002, // 캐릭터 카테고리
+            mask: 0xffffffff, // 모든 것과 충돌
+          },
+        }
+      );
+
+      iconBodyRef.current = iconBody; // ref에 저장
+
+      // 위치 업데이트 이벤트
+      World.add(engine.world, iconBodyRef.current);
+    }
+
     const walls = [
       // 바닥
       Bodies.rectangle(
@@ -331,12 +466,20 @@ const Section01 = ({ onMoveBox }: onMoveBox) => {
         {
           isStatic: true,
           render: { fillStyle: "transparent" },
+          collisionFilter: {
+            category: 0x0001, // 벽 카테고리
+            mask: 0xffffffff, // 모든 것과 충돌
+          },
         }
       ),
       // 왼쪽 벽
       Bodies.rectangle(0, window.innerHeight / 2, 60, window.innerHeight, {
         isStatic: true,
         render: { fillStyle: "transparent" },
+        collisionFilter: {
+          category: 0x0001, // 벽 카테고리
+          mask: 0xffffffff, // 모든 것과 충돌
+        },
       }),
       // 오른쪽 벽
       Bodies.rectangle(
@@ -347,74 +490,82 @@ const Section01 = ({ onMoveBox }: onMoveBox) => {
         {
           isStatic: true,
           render: { fillStyle: "transparent" },
+          collisionFilter: {
+            category: 0x0001, // 벽 카테고리
+            mask: 0xffffffff, // 모든 것과 충돌
+          },
         }
       ),
     ];
 
     World.add(engine.world, walls);
 
-    // const createStar = () => {
-    //   const star = Bodies.circle(
-    //     Math.random() * (window.innerWidth - 100) + 50, // 벽 안쪽에서만 생성
-    //     -30,
-    //     15,
-    //     {
-    //       render: {
-    //         fillStyle: "#FFD700",
-    //       },
-    //       restitution: 0.3, // 탄성 감소
-    //       friction: 0.1,
-    //       density: 0.001, // 밀도 감소
-    //     }
-    //   );
-    //   World.add(engine.world, star);
-    // };
-
-    // const createStar = () => {
-    //   const star = Bodies.circle(
-    //     Math.random() * (window.innerWidth - 100) + 50,
-    //     -30,
-    //     15,
-    //     {
-    //       render: {
-    //         fillStyle: 'transparent',
-    //         element: document.createElement('i'),  // element를 render 안으로
-    //         visible: true
-    //       },
-    //       restitution: 0.3,
-    //       friction: 0.1,
-    //       density: 0.001
-    //     }
-    //   );
-
-    //   // element에 클래스 추가
-    //   if (star.render.element instanceof HTMLElement) {
-    //     star.render.element.className = 'nes-icon is-large star';
-    //   }
-
-    //   World.add(engine.world, star);
-    // };
-
     const createStar = () => {
+      if (!dropdownStarRef.current) return;
+
+      const randomStar = stars[Math.floor(Math.random() * stars.length)];
+
+      const starElement = document.createElement("img");
+      starElement.src = randomStar.imagePath;
+      starElement.style.position = "absolute";
+      starElement.style.width = `${randomStar.size}px`;
+      starElement.style.height = `${randomStar.size}px`;
+      starElement.style.pointerEvents = "none";
+      dropdownStarRef.current.appendChild(starElement);
+
+      // Matter.js 물리 객체 생성
       const star = Bodies.circle(
         Math.random() * (window.innerWidth - 100) + 50,
-        -30,
-        15,
+        -50,
+        randomStar.radius,
         {
           render: {
-            fillStyle: "#FFD700", // 일단 기본 색상으로
-            visible: true,
+            visible: false,
           },
-          restitution: 0.3,
-          friction: 0.1,
-          density: 0.001,
+          restitution: 0.6,
+          friction: 0.05,
+          density: 0.1,
+          frictionAir: 0.001,
+          collisionFilter: {
+            category: 0x0004, // 별 카테고리
+            mask: 0xffffffff, // 모든 것과 충돌
+          },
         }
       );
+      Matter.Events.on(engine, "collisionStart", (event) => {
+        event.pairs.forEach((pair) => {
+          // 충돌한 두 물체 중 하나가 star이고 다른 하나가 iconBodyRef.current인 경우만 처리
+          if (
+            (pair.bodyA === star && pair.bodyB === iconBodyRef.current) ||
+            (pair.bodyA === iconBodyRef.current && pair.bodyB === star)
+          ) {
+            // console.log("crush");
 
+            // 별만 위로 튕기게 함
+            Matter.Body.setVelocity(star, {
+              x: star.velocity.x,
+              y: -15,
+            });
+          }
+        });
+      });
+
+      const updateListener = () => {
+        starElement.style.left = `${star.position.x - randomStar.size / 2}px`;
+        starElement.style.top = `${star.position.y - randomStar.size / 2}px`;
+
+        if (star.position.y > window.innerHeight + randomStar.size) {
+          Matter.Events.off(engine, "afterUpdate", updateListener);
+          World.remove(engine.world, star);
+          starElement.remove();
+        }
+      };
+
+      Matter.Events.on(engine, "afterUpdate", updateListener);
       World.add(engine.world, star);
     };
 
-    const starInterval = setInterval(createStar, 5000);
+    const starInterval = setInterval(createStar, 500000);
 
     // Engine.run(engine);
     const runner = Runner.create();
@@ -427,11 +578,28 @@ const Section01 = ({ onMoveBox }: onMoveBox) => {
       World.clear(engine.world, false);
       Engine.clear(engine);
       render.canvas.remove();
+      if (iconBodyRef.current) {
+        World.remove(engine.world, iconBodyRef.current);
+      }
     };
   }, []);
 
+  useEffect(() => {
+    if (myIconRef.current && iconBodyRef.current) {
+      const baseX = window.innerWidth * 0.1;
+      const newX = baseX + position.x;
+      const newY = window.innerHeight - 120 + position.y;
+
+      Matter.Body.setPosition(iconBodyRef.current, {
+        x: newX,
+        y: newY,
+      });
+      Matter.Body.setVelocity(iconBodyRef.current, { x: 0, y: 0 });
+    }
+  }, [position]);
+
   return (
-    <Container>
+    <Container ref={ref}>
       <div
         ref={sceneRef}
         style={{
@@ -453,7 +621,7 @@ const Section01 = ({ onMoveBox }: onMoveBox) => {
             <span> 개발자</span>
           </div>
           <div className="sec1Text_btm">
-            <span>송채영 포트폴리오</span>
+            <span>송채영 {mobileSize && <br />} 포트폴리오</span>
           </div>
         </div>
         {/* <button className="playbtn nes-btn is-primary">PLAY</button> */}
@@ -487,7 +655,7 @@ const Section01 = ({ onMoveBox }: onMoveBox) => {
           className="pixelicons"
           ref={iconRef}
           tabIndex={0}
-          onKeyDown={handleCharter}
+          onKeyDown={mobileSize ? undefined : handleCharter}
           style={{
             outline: "none",
           }}
@@ -500,6 +668,7 @@ const Section01 = ({ onMoveBox }: onMoveBox) => {
           )}
 
           <img
+            ref={myIconRef}
             style={{
               transform: `translate(${position.x}px, ${position.y}px) scaleX(${
                 isLeft ? -1 : 1
@@ -507,14 +676,13 @@ const Section01 = ({ onMoveBox }: onMoveBox) => {
               transformOrigin: "center",
               transition: "transform 0.2s ease",
               outline: "none",
+              marginLeft: "-30px",
             }}
             src="/pixelart/pixelicon.png"
             alt="pixelicon"
           />
         </div>
-        <div className="dropdownStar">
-          <i className="nes-icon is-large star"></i>
-        </div>
+        <div className="dropdownStar" ref={dropdownStarRef}></div>
       </article>
 
       <article className="sec1btm">
@@ -526,4 +694,4 @@ const Section01 = ({ onMoveBox }: onMoveBox) => {
   );
 };
 
-export default Section01;
+export default forwardRef<HTMLElement, Section01Props>(Section01);

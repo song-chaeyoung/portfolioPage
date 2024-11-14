@@ -158,32 +158,13 @@
           "link": "url/주소"
         }
       ],
-      "desc": "웹사이트 설명입니다."
+      "desc": "카카오스토리 설명입니다."
     },
     {
       "id": 2,
       "category": "typescript",
-      "img": ["url/주소", "url/주소", "url/주소"],
-      "title": "Oliveyoung-Website",
-      "skills": ["Team-Project", "JavaScirpt", "HTML", "CSS", "FIGMA"],
-      "links": [
-        {
-          "type": "github",
-          "link": "url/주소"
-        },
-        {
-          "type": "website",
-          "link": "url/주소"
-        }
-      ],
-      "desc": "웹사이트 설명입니다."
-    },
-    {
-      "id": 4,
-      "category": "react",
-      "img": ["url/주소", "url/주소", "url/주소"],
-      "title": "Oliveyoung-Website",
-      "skills": ["Team-Project", "JavaScirpt", "HTML", "CSS", "FIGMA"],
+      "title": "Protfolio",
+      "skills": ["Personal-Project", "TypeScript", "React", "GSAP", "FIGMA"],
       "links": [
         {
           "type": "github",
@@ -198,7 +179,154 @@
           "link": "url/주소"
         }
       ],
-      "desc": "웹사이트 설명입니다."
+      "desc": "Protfolio 설명입니다."
+    },
+    {
+      "id": 4,
+      "category": "react",
+      "title": "약과",
+      "skills": ["React", "Framer Motion", "FIGMA"],
+      "links": [
+        {
+          "type": "github",
+          "link": "url/주소"
+        },
+        {
+          "type": "figma",
+          "link": "url/주소"
+        },
+        {
+          "type": "website",
+          "link": "url/주소"
+        }
+      ],
+      "desc": "약과 설명입니다."
+    },
+    {
+      "id": 5,
+      "category": "react",
+      "title": "넷플릭스",
+      "skills": ["React", "Redux", "AplloServer"],
+      "links": [
+        {
+          "type": "github",
+          "link": "url/주소"
+        },
+        {
+          "type": "figma",
+          "link": "url/주소"
+        },
+        {
+          "type": "website",
+          "link": "url/주소"
+        }
+      ],
+      "desc": "넷플릭스 설명입니다."
+    },
+    {
+      "id": 5,
+      "category": "javascript",
+      "title": "싸이월드",
+      "skills": ["javascript", "iframe", "Canvas"],
+      "links": [
+        {
+          "type": "github",
+          "link": "url/주소"
+        },
+        {
+          "type": "website",
+          "link": "url/주소"
+        }
+      ],
+      "desc": "넷플릭스 설명입니다."
+    },
+    {
+      "id": 6,
+      "category": "typescript",
+      "title": "투두리스트(드래그앤 드롭)",
+      "skills": ["TypeScript", "React", "react-beautiful-dnd"],
+      "links": [
+        {
+          "type": "github",
+          "link": "url/주소"
+        },
+        {
+          "type": "website",
+          "link": "url/주소"
+        }
+      ],
+      "desc": "투두리스트 설명입니다."
+    },
+    {
+      "id": 7,
+      "category": "react",
+      "title": "겨울간식 mbti",
+      "skills": ["React", "react-router-dom", "KaKao AdFit", "KaKaoShare"],
+      "links": [
+        {
+          "type": "github",
+          "link": "https://github.com/song-chaeyoung/winterSnackMbti"
+        },
+        {
+          "type": "website",
+          "link": "https://wintersnackmbtitest.netlify.app"
+        }
+      ],
+      "desc": "겨울간식 mbti 설명입니다."
+    },
+    {
+      "id": 8,
+      "category": "react",
+      "img": ["url/주소", "url/주소", "url/주소"],
+      "title": "지그재그",
+      "skills": ["React", "react-router-dom"],
+      "links": [
+        {
+          "type": "github",
+          "link": "url/주소"
+        },
+        {
+          "type": "website",
+          "link": "url/주소"
+        }
+      ],
+      "desc": "지그재그 사이트 설명입니다."
+    },
+    {
+      "id": 9,
+      "category": "javascript",
+      "img": ["url/주소", "url/주소", "url/주소"],
+      "title": "셀렉토커피",
+      "skills": ["JavaScript", "HTML", "CSS"],
+      "links": [
+        {
+          "type": "github",
+          "link": "url/주소"
+        },
+        {
+          "type": "website",
+          "link": "url/주소"
+        }
+      ],
+      "desc": "셀렉토커피 사이트 설명입니다."
+    },
+    {
+      "id": 10,
+      "category": "react",
+      "img": ["url/주소", "url/주소", "url/주소"],
+      "title": "이모션 다이어리",
+      "skills": ["React", "react-router-dom"],
+      "links": [
+        {
+          "type": "github",
+          "link": "url/주소"
+        },
+        {
+          "type": "website",
+          "link": "url/주소"
+        }
+      ],
+      "desc": "이모션 다이어리 사이트 설명입니다."
     }
   ]
 }

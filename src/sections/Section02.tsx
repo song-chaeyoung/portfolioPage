@@ -1,7 +1,8 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import React, { forwardRef, useEffect } from "react";
+import React, { forwardRef, useContext, useEffect } from "react";
 import styled from "styled-components";
+import { mobileSizeContext } from "../App";
 
 const Container = styled.section`
   width: 100%;
@@ -30,7 +31,6 @@ const Container = styled.section`
     .profileImg {
       flex: 2;
       width: 21.875rem;
-      /* height: 32.78119rem; */
       border-radius: 1.25rem;
       overflow: hidden;
       img {
@@ -79,10 +79,8 @@ const Container = styled.section`
       gap: 1rem;
       perspective: 1000px;
       > i {
-        /* transform: scale(2); */
-        animation: rotateCenter 5s linear infinite; /* 회전 애니메이션 */
-        /* transform: rotateY(360deg) translateZ(100px); */
-        transform-origin: center; /* 가운데 기준 회전 */
+        animation: rotateCenter 5s linear infinite;
+        transform-origin: center;
         margin: 0 5px;
         transform-style: preserve-3d;
       }
@@ -110,11 +108,44 @@ const Container = styled.section`
       transform: scale(2.5) rotateY(360deg);
     }
   }
+
+  @media (max-width: 768px) {
+    padding: 0 1rem 2rem;
+    .se2Container {
+      flex-direction: column;
+      align-items: center;
+    }
+    .se2BtmIcons {
+      .btmIcons_hearts {
+        gap: 0.5rem;
+        > i {
+          animation: rotateCenterMobile 5s linear infinite;
+        }
+      }
+      .btmIcons_contact {
+        gap: 0.5rem;
+        > a {
+          transform: scale(0.7);
+        }
+      }
+    }
+
+    @keyframes rotateCenterMobile {
+      0% {
+        transform: scale(2) rotateY(0deg);
+      }
+      100% {
+        transform: scale(2) rotateY(360deg);
+      }
+    }
+  }
 `;
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Section02 = forwardRef<HTMLElement>((_, ref) => {
+  const mobileSize = useContext(mobileSizeContext);
+
   // useEffect(() => {
   //   const tl = gsap.timeline({
   //     scrollTrigger: {

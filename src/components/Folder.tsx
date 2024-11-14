@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 // import "98.css";
 import styled from "styled-components";
 import { Project, Skill } from "../type";
-import { myData } from "../api";
 import { AnimatePresence, motion } from "framer-motion";
 import ProjectFolder from "./ProjectFolder";
+import { mobileSizeContext } from "../App";
 
 const Container = styled(motion.div)<{ $zIndex: number }>`
   position: absolute;
@@ -28,7 +28,8 @@ const Container = styled(motion.div)<{ $zIndex: number }>`
 
   .topBar {
     position: sticky;
-    top: 2px;
+    top: 1px;
+    /* top: 0; */
     left: 1px;
     width: calc(100% - 4px);
     padding: 0.25rem 0.5rem;
@@ -36,7 +37,8 @@ const Container = styled(motion.div)<{ $zIndex: number }>`
     display: flex;
     justify-content: space-between;
     font-family: "DungGeunMo";
-    /* z-index: 10; */
+    z-index: 10;
+    /* border-top: 4px solid #fff; */
     .title {
       font-size: 1.25rem;
       text-transform: capitalize;
@@ -80,8 +82,6 @@ const Container = styled(motion.div)<{ $zIndex: number }>`
       /* justify-content: center; */
       .item {
         width: 18.875rem;
-        /* justify-self: center; */
-        /* width: fit-content; */
         transition: all 0.3s;
         cursor: pointer;
         .img {
@@ -117,6 +117,45 @@ const Container = styled(motion.div)<{ $zIndex: number }>`
         }
         &:hover {
           scale: 1.1;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: calc(100vh - 55px);
+    bottom: 0;
+    margin-top: auto;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    .topBar {
+      .title {
+        font-size: 1.75rem;
+      }
+    }
+
+    .contents {
+      .items {
+        margin: 3rem auto 0;
+        align-items: center;
+        padding: 1rem;
+        padding: 0;
+        /* margin: 0 auto; */
+        .item {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          .img {
+            height: 100%;
+            width: 90vw;
+          }
+          .desc {
+            .content_title {
+              font-size: 1.75rem;
+            }
+          }
         }
       }
     }
@@ -162,6 +201,37 @@ export const containerVariants = {
   },
 };
 
+export const containerVariantsMobile = {
+  initial: {
+    scale: 0,
+    opacity: 0,
+    y: "100%",
+  },
+  visible: {
+    scale: 1,
+    opacity: 1,
+    // y: "35%",
+    // y: "-50%",
+    // top: "50%",
+    y: "0%",
+    bottom: 0,
+  },
+  exit: {
+    scale: 0,
+    opacity: 0,
+    y: "100%",
+    transition: {
+      duration: 0.3,
+      ease: [0.4, 0, 1, 1],
+    },
+  },
+  transition: {
+    type: "spring",
+    stiffness: 300,
+    damping: 25,
+  },
+};
+
 const Folder = ({
   name,
   data,
@@ -169,6 +239,7 @@ const Folder = ({
   setActiveFolder,
   onClose,
 }: FolderProps) => {
+  const mobileSize = useContext(mobileSizeContext);
   const containerRef = useRef<HTMLDivElement>(null);
   const [selectedProjectIdx, setSelectedProjectIdx] = useState<number | null>(
     null
@@ -207,9 +278,9 @@ const Folder = ({
         ref={containerRef}
         $zIndex={zIndex}
         onClick={handleClick}
-        drag
+        drag={mobileSize ? false : true}
         dragMomentum={false}
-        variants={containerVariants}
+        variants={mobileSize ? containerVariantsMobile : containerVariants}
         initial="initial"
         animate="visible"
         exit="exit"
@@ -249,6 +320,7 @@ const Folder = ({
               <ProjectFolder
                 data={data[selectedProjectIdx]}
                 setSelectedProjectIdx={setSelectedProjectIdx}
+                zIndex={zIndex}
               />
             )}
           </AnimatePresence>

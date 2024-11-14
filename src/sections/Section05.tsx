@@ -1,7 +1,8 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import { mobileSizeContext } from "../App";
 
 const Container = styled.section`
   width: 100%;
@@ -21,8 +22,6 @@ const Container = styled.section`
     z-index: 10;
     transform: translateX(-50%);
     background: #2b2a3a;
-    /* background: #fff;
-    color: #000; */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -44,6 +43,7 @@ const Container = styled.section`
       p {
         font-size: 1.25rem;
         line-height: 140%;
+        word-break: keep-all;
       }
     }
   }
@@ -172,6 +172,47 @@ const Container = styled.section`
       transform: scale(1.1);
     }
   }
+
+  @media (max-width: 768px) {
+    padding: 0 1rem;
+    .ballon {
+      top: 15%;
+      width: fit-content;
+      padding: 2rem 4rem;
+      /* padding: 0; */
+      /* margin: 0 1rem; */
+      margin: 0 auto;
+      .contact_text {
+        width: 100%;
+      }
+    }
+    .contact_icons {
+      flex-direction: column;
+      .contact_icon {
+        a {
+          .contact_icon_text {
+            p {
+              &:nth-child(2) {
+                font-size: 1.15rem;
+              }
+            }
+          }
+          /* i {
+            transform: scale(1.8);
+            img {
+              transform: scale(0.5);
+            }
+          } */
+        }
+      }
+    }
+    .starts {
+      display: none;
+    }
+    .icon_walking {
+      /* animation: iconWalkingMobile 5s linear; */
+    }
+  }
 `;
 
 // const Star = styled.img<{ top: number; left: number }>`
@@ -225,6 +266,8 @@ const STARS = [
 ];
 
 const Section05 = () => {
+  const mobileSize = useContext(mobileSizeContext);
+
   const containerRef = useRef<HTMLDivElement>(null);
   const iconRef = useRef<HTMLDivElement>(null);
 
@@ -251,7 +294,7 @@ const Section05 = () => {
         onEnter: () => {
           if (iconRef.current) {
             gsap.to(iconRef.current, {
-              translateX: "17vw",
+              translateX: mobileSize ? "1.5vw" : "17vw",
               duration: 3,
               ease: "easeInOut",
               onComplete: () => {
@@ -265,7 +308,7 @@ const Section05 = () => {
         },
       });
     }
-  }, []);
+  }, [mobileSize]);
 
   return (
     <Container ref={containerRef}>
@@ -317,9 +360,9 @@ const Section05 = () => {
       <div className="icon_walking" ref={iconRef}>
         <img src="/pixelart/pixelicon_walk.gif" alt="walking" />
       </div>
-      <div className="icon_computer">
+      {/* <div className="icon_computer">
         <img src="/pixelart/iconComputer.png" alt="computer" />
-      </div>
+      </div> */}
       <div className="btmGround">
         <div className="lightGreen"></div>
         <div className="green"></div>

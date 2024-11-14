@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
-import { containerVariants } from "./Folder";
+import { containerVariants, containerVariantsMobile } from "./Folder";
+import { mobileSizeContext } from "../App";
 
 const Container = styled(motion.div)<{ zIndex: number }>`
   position: absolute;
@@ -51,6 +52,20 @@ const Container = styled(motion.div)<{ zIndex: number }>`
       }
     }
   }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: calc(100vh - 55px);
+    bottom: 0;
+    margin-top: auto;
+    .topBar {
+      font-size: 1.75rem;
+
+      .title {
+        font-size: 1.75rem;
+      }
+    }
+  }
 `;
 
 interface TextFolderProps {
@@ -70,6 +85,8 @@ const TextFolder = ({
   setActiveFolder,
   setTextFolderOpen,
 }: TextFolderProps) => {
+  const mobileSize = useContext(mobileSizeContext);
+
   const handleClick = () => {
     // setActiveFolder();
     setActiveFolder(text);
@@ -83,9 +100,9 @@ const TextFolder = ({
 
   return (
     <Container
-      drag
+      drag={mobileSize ? false : true}
       dragMomentum={false}
-      variants={containerVariants}
+      variants={mobileSize ? containerVariantsMobile : containerVariants}
       initial="initial"
       animate="visible"
       exit="exit"

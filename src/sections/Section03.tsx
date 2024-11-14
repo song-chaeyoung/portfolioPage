@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { forwardRef, useContext, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { myData } from "../api";
 // import ScrollTrigger from "gsap/all";
@@ -7,6 +7,7 @@ import gsap from "gsap";
 import { Skill } from "../type";
 import ScrollItemSc3 from "../components/ScrollItemSc3";
 import Lenis from "lenis";
+import { mobileSizeContext } from "../App";
 
 const MainSection = styled.section`
   position: relative;
@@ -41,6 +42,9 @@ const Text = styled.p`
   }
 
   @media screen and (max-width: 768px) {
+    font-size: 3.5rem;
+    text-align: center;
+    line-height: 1.4;
     &.fixed_position {
       transform: translate(-50%, 35vh) scale(0.4);
     }
@@ -104,7 +108,8 @@ const ICONS = [
 
 gsap.registerPlugin(ScrollTrigger);
 
-const Section3 = () => {
+const Section3 = (_: any, ref: React.ForwardedRef<HTMLDivElement>) => {
+  const mobileSize = useContext(mobileSizeContext);
   const sectionRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLParagraphElement>(null);
@@ -230,8 +235,10 @@ const Section3 = () => {
 
   return (
     <MainSection ref={triggerRef}>
-      <Background />
-      <Text ref={textRef}>저는 이런 기술을 사용해봤어요</Text>
+      <Background ref={ref} />
+      <Text ref={textRef}>
+        저는 이런 기술을 {mobileSize && <br />} 사용해봤어요
+      </Text>
       <Container ref={sectionRef}>
         <article>
           <ul className="all">
@@ -258,4 +265,4 @@ const Section3 = () => {
   );
 };
 
-export default Section3;
+export default forwardRef<HTMLDivElement, any>(Section3);
