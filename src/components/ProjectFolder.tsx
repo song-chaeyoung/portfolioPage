@@ -184,7 +184,6 @@ const Container = styled(motion.div)<{ $zIndex: number }>`
 
 interface ProjectFolderProps {
   data: Project;
-  // setSelectedProjectId: React.Dispatch<React.SetStateAction<number | null>>;
   setSelectedProjectIdx: React.Dispatch<React.SetStateAction<number | null>>;
   zIndex: number;
 }
@@ -242,12 +241,6 @@ const ProjectFolder = ({
     <Container
       $zIndex={zIndex}
       ref={tesetRef}
-      // onWheel={(e: React.WheelEvent<HTMLDivElement>) => {
-      //   if (!isOpen) {
-      //     e.stopPropagation();
-      //     console.log("wheel");
-      //   }
-      // }}
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.8 }}

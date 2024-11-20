@@ -6,6 +6,7 @@ import { Project } from "../type";
 import { AnimatePresence } from "framer-motion";
 import TextFolder from "./TextFolder";
 import { motion } from "framer-motion";
+import Bomb from "./Bomb";
 
 const Container = styled.div`
   width: 100%;
@@ -195,9 +196,6 @@ const ComputerDisplaySc4 = () => {
   const [now, setNow] = useState<string>("");
   const [powerList, setPowerList] = useState<boolean>(false);
 
-  // const containerRef = useRef<HTMLDivElement>(null);
-  // gsap.registerPlugin(ScrollTrigger);
-
   useEffect(() => {
     (async () => {
       const response = await myData();
@@ -216,7 +214,6 @@ const ComputerDisplaySc4 = () => {
 
     updateTime();
     const intervalId = setInterval(updateTime, 1000);
-
     return () => clearInterval(intervalId);
   }, []);
 
@@ -228,6 +225,7 @@ const ComputerDisplaySc4 = () => {
   const handleFolderClose = (name: string) => {
     setBtmState((prev) => prev.filter((it) => it !== name));
     setFolder((prev) => prev.filter((it) => it !== name));
+    setActiveFolder("");
   };
 
   const folderOpen = (name: string) => {
@@ -257,6 +255,7 @@ const ComputerDisplaySc4 = () => {
     }
     setBtmState((prev) => [...prev, name]);
     setTextFolderOpen(name);
+    setActive(name);
   };
 
   const stateClick = (name: string) => {
@@ -266,7 +265,7 @@ const ComputerDisplaySc4 = () => {
 
   return (
     <>
-      <Container>
+      <Container onClick={() => setPowerList(false)}>
         <img src="/pixelart/bg.jpg" alt="bg" />
         <div className="icon_container">
           <div className="icons_project">
@@ -306,17 +305,7 @@ const ComputerDisplaySc4 = () => {
               <img src="/pixelart/documents.png" alt="documents" />
               <p>TypeScript</p>
             </motion.div>
-            <motion.div
-              className="icon"
-              drag
-              dragMomentum={false}
-              onClick={() => textFolderOpenEvent("readme")}
-            >
-              <img className="text" src="/pixelart/text.png" alt="text" />
-              <p>READ ME</p>
-            </motion.div>
-          </div>
-          <div className="icons_contact">
+
             <motion.div
               className="icon"
               drag
@@ -325,6 +314,17 @@ const ComputerDisplaySc4 = () => {
             >
               <img className="text" src="/pixelart/text.png" alt="text" />
               <p>CONTACT</p>
+            </motion.div>
+          </div>
+          <div className="icons_contact">
+            <motion.div
+              className="icon"
+              drag
+              dragMomentum={false}
+              onClick={() => textFolderOpenEvent("readme")}
+            >
+              <img className="text" src="/pixelart/text.png" alt="text" />
+              <p>READ ME</p>
             </motion.div>
           </div>
         </div>
@@ -372,7 +372,10 @@ const ComputerDisplaySc4 = () => {
             )}
             <div
               className="powerBtn"
-              onClick={() => setPowerList((prev) => !prev)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setPowerList((prev) => !prev);
+              }}
             >
               <img src="/pixelart/window-logo.png" alt="window-logo" />
               <p>Start</p>
@@ -417,14 +420,15 @@ const ComputerDisplaySc4 = () => {
             <TextFolder
               text={textFolderOpen}
               setBtmState={setBtmState}
-              setFolder={setFolder}
               zIndex={activeFolder === textFolderOpen ? 999 : 1}
               setActiveFolder={() => setActive(textFolderOpen)}
               setTextFolderOpen={setTextFolderOpen}
+              setActive={setActive}
             />
           )}
         </AnimatePresence>
       </Container>
+      {/* <Bomb /> */}
     </>
   );
 };

@@ -46,12 +46,22 @@ const Container = styled.section`
       justify-content: center;
       gap: 2rem;
       letter-spacing: -0.0375rem;
-      h2 {
+      .title {
         font-family: DungGeunMo;
-        /* font-size: 1.75rem; */
-        font-size: 1.5rem;
-        margin-bottom: 0.5rem;
+        letter-spacing: -0.15rem;
+        > h2 {
+          font-size: 2rem;
+          margin-bottom: 1rem;
+          text-align: center;
+        }
+        > h5 {
+          font-size: 1.25rem;
+          word-break: keep-all;
+          /* color: #ddd; */
+          line-height: 120%;
+        }
       }
+
       h4 {
         font-family: DungGeunMo;
         font-size: 1.5rem;
@@ -61,7 +71,7 @@ const Container = styled.section`
         }
       }
       p {
-        font-size: 0.9rem;
+        font-size: 1rem;
         line-height: 140%;
         letter-spacing: -0.02rem;
         color: #eee;
@@ -146,38 +156,6 @@ gsap.registerPlugin(ScrollTrigger);
 const Section02 = forwardRef<HTMLElement>((_, ref) => {
   const mobileSize = useContext(mobileSizeContext);
 
-  // useEffect(() => {
-  //   const tl = gsap.timeline({
-  //     scrollTrigger: {
-  //       trigger: ".se2Continaer",
-  //       start: "top 20%",
-  //       end: "top 5%",
-  //       scrub: 2,
-  //       // scrub: 0.2,
-  //       // toggleActions: "play none none reverse",
-  //       toggleActions: "play pause resume reverse",
-  //       // markers: true,
-  //     },
-  //   });
-  //   tl.fromTo(
-  //     ".qna",
-  //     { opacity: 0.1, y: 100, scale: 0.5, filter: "blur(0.5rem)" },
-  //     { opacity: 1, y: 0, scale: 1, filter: "blur(0)", duration: 5 }
-  //   )
-  //     .fromTo(
-  //       ".eduInfo",
-  //       { opacity: 0.1, y: 100, scale: 0.5, filter: "blur(0.5rem)" },
-  //       { opacity: 1, y: 0, scale: 1, filter: "blur(0)", duration: 5 }
-  //       // "-=0.5"
-  //     )
-  //     .fromTo(
-  //       ".workInfo",
-  //       { opacity: 0.1, y: 100, scale: 0.5, filter: "blur(0.5rem)" },
-  //       { opacity: 1, y: 0, scale: 1, filter: "blur(0)", duration: 1 }
-  //       // "-=0.5"
-  //     );
-  // }, []);
-
   useEffect(() => {
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -214,10 +192,15 @@ const Section02 = forwardRef<HTMLElement>((_, ref) => {
           <img src="/pixelart/aboutMe.jpg" alt="aboutMe" />
         </div>
         <ul className="profileText">
+          <li className="title">
+            <h2>안녕하세요 프론트엔드 송채영입니다</h2>
+            {/* <h5>
+              저는 끊임없는 도전을 즐기며, 웹세상을 새롭게 만드는 웹 개발의
+              매력에 빠져있습니다.
+            </h5> */}
+          </li>
           <li className="qna">
-            <h4>
-              <span>성장</span>과 <span>성취</span>에 대한 즐거움
-            </h4>
+            <h4>첫인상을 사로잡는 프론트엔드</h4>
             <p>
               즐거움에 대한 내용 세줄 정도 즐거움에 대한 내용 세줄 정도 즐거움에
               대한 내용 세줄 정도 즐거움에 대한 내용 세줄 정도 즐거움에 대한
@@ -226,6 +209,23 @@ const Section02 = forwardRef<HTMLElement>((_, ref) => {
             </p>
           </li>
           <li className="eduInfo">
+            <h4>즐거움을 느끼는 프론트엔드</h4>
+            <p>
+              성장과 성취에 대한 즐거움에 대한 내용 세줄 정도 즐거움에 대한 내용
+              세줄 정도 즐거움에 대한 내용 세줄 정도 즐거움에 대한 내용 세줄
+              정도 즐거움에 대한 내용 세줄 정도 즐거움에 대한 내용 세줄 정도
+              즐거움에 대한 내용 세줄 정도 즐거움에 대한 내용 세줄 정도
+            </p>
+          </li>
+          <li className="workInfo">
+            <h4>발전하는 프론트엔드</h4>
+            <p>
+              개발시 새롭게 얻은 지식이나 문제 해결 방식을 블로그에 기록하며
+              공부하고 있습니다.
+            </p>
+          </li>
+
+          {/* <li className="eduInfo">
             <h2>교육</h2>
             <h4>
               K-Digital Training 기업연계 프론트엔드 개발
@@ -251,7 +251,7 @@ const Section02 = forwardRef<HTMLElement>((_, ref) => {
               통해 개발 과정이 더 빠르고 효율적으로 진행할 수 있는 프론트엔드
               개발자(코딩) 부트캠프 교육과정을 수료하였습니다.
             </p>
-          </li>
+          </li> */}
         </ul>
       </div>
       <div className="se2BtmIcons">

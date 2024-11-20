@@ -215,21 +215,6 @@ const Container = styled.section`
   }
 `;
 
-// const Star = styled.img<{ top: number; left: number }>`
-//   position: absolute;
-//   top: ${({ top }) => top}px;
-//   left: ${({ left }) => left}px;
-//   width: 50px;
-//   height: 50px;
-// `;
-
-// const images = [
-//   "/pixelart/star1.png",
-//   "/pixelart/star3.png",
-//   "/pixelart/star2.png",
-//   "/pixelart/star4.png",
-// ];
-
 const STARS = [
   {
     image: "/pixelart/star1.png",

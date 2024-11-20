@@ -220,55 +220,6 @@ const App = () => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   let isAnimating = false;
-
-  //   const wheelHandler = (e: WheelEvent) => {
-  //     const { deltaY } = e;
-  //     const scrollY = window.scrollY;
-  //     const pageHeight = window.innerHeight;
-
-  //     if (isAnimating) return;
-
-  //     if (scrollY >= pageHeight && scrollY < pageHeight * 2 && deltaY > 0) {
-  //       // e.preventDefault();
-  //       isAnimating = true;
-  //       window.scrollTo({
-  //         top: pageHeight * 2,
-  //         behavior: "smooth",
-  //       });
-
-  //       setTimeout(() => {
-  //         isAnimating = false;
-  //       }, 1000);
-  //     } else if (
-  //       scrollY >= pageHeight * 2 &&
-  //       scrollY < pageHeight * 3 &&
-  //       deltaY < 0
-  //     ) {
-  //       // e.preventDefault();
-  //       isAnimating = true;
-  //       window.scrollTo({
-  //         top: pageHeight,
-  //         left: 0,
-  //         behavior: "smooth",
-  //       });
-  //       setTimeout(() => {
-  //         isAnimating = false;
-  //       }, 1000);
-  //     }
-  //   };
-  //   const allSectionCurrent = allSection.current;
-
-  //   allSectionCurrent?.addEventListener("wheel", wheelHandler, {
-  //     passive: false,
-  //   });
-
-  //   return () => {
-  //     allSectionCurrent?.removeEventListener("wheel", wheelHandler);
-  //   };
-  // }, [loading]);
-
   return (
     <>
       <GlobalStyle />

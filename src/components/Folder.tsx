@@ -17,14 +17,14 @@ const Container = styled(motion.div)<{ $zIndex: number }>`
   height: 37.5rem;
   /* width: 100%; */
   background: #fff;
-  overflow-y: auto;
+  /* overflow-y: auto; */
   /* scroll-behavior: smooth; */
   box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #dfdfdf,
     inset -2px -2px grey, inset 2px 2px #fff;
-  -ms-overflow-style: none;
+  /* -ms-overflow-style: none;
   &::-webkit-scrollbar {
     display: none;
-  }
+  } */
 
   .topBar {
     position: sticky;
@@ -63,12 +63,11 @@ const Container = styled(motion.div)<{ $zIndex: number }>`
   }
 
   .contents {
-    width: 100%;
-    height: 100%;
+    width: 99.5%;
+    margin: 0 auto;
+    height: calc(100% - 1.9rem);
     position: relative;
-    /* width: fit-content; */
-    /* margin: 0 auto; */
-    /* padding: 3.75rem 4.81rem; */
+    overflow-y: scroll;
 
     .items {
       /* width: fit-content; */
@@ -95,6 +94,12 @@ const Container = styled(motion.div)<{ $zIndex: number }>`
             width: 100%;
             height: 100%;
             object-fit: cover;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: -o-crisp-edges;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+            transform: translateZ(0);
+            backface-visibility: hidden;
           }
         }
         .desc {
@@ -109,10 +114,22 @@ const Container = styled(motion.div)<{ $zIndex: number }>`
             letter-spacing: -0.0625rem;
           }
           .content_desc {
-            font-size: 0.75rem;
+            font-size: 0.95rem;
             letter-spacing: -0.0625rem;
             font-weight: 300;
             line-height: 1rem;
+            cursor: pointer;
+            p {
+              width: fit-content;
+              color: #666;
+              margin: 0 auto;
+              padding-bottom: 0.125rem;
+              transition: all 0.3s;
+              border-bottom: 1px solid transparent;
+              &:hover {
+                border-bottom: 1px solid #666;
+              }
+            }
           }
         }
         &:hover {
@@ -310,6 +327,19 @@ const Folder = ({
                 </div>
                 <div className="desc">
                   <h3 className="content_title">{it.title}</h3>
+                  <a
+                    className="content_desc"
+                    href={
+                      it.links.find((link) => link.type === "website")?.link
+                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <p>
+                      {it.links.find((link) => link.type === "website")?.link}
+                    </p>
+                  </a>
                   {/* <p className="content_desc">{it.desc}</p> */}
                 </div>
               </div>

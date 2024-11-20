@@ -6,7 +6,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import gsap from "gsap";
 import { Skill } from "../type";
 import ScrollItemSc3 from "../components/ScrollItemSc3";
-import Lenis from "lenis";
 import { mobileSizeContext } from "../App";
 
 const MainSection = styled.section`

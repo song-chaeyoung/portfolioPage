@@ -169,11 +169,21 @@ const Container = styled.section`
       width: 100%;
       height: 100%;
       position: absolute;
-      > img {
+      .iconCharter {
         position: absolute;
         bottom: 0;
         left: 10%;
         width: 6rem;
+        .iconCharter_score {
+          width: fit-content;
+          font-size: 3rem;
+          font-family: "DungGeunMo";
+          letter-spacing: -0.5rem;
+          color: #fff;
+        }
+        > img {
+          width: 100%;
+        }
       }
       .iconArrow {
         position: absolute;
@@ -187,10 +197,15 @@ const Container = styled.section`
           width: 2rem;
           transform: rotate(45deg);
         }
+        div {
+          display: flex;
+          flex-direction: column;
+          gap: 0.25rem;
+        }
         p {
           font-size: 2rem;
           font-family: DungGeunMo;
-          padding-bottom: 2rem;
+          /* padding-bottom: 2rem; */
           text-transform: uppercase;
         }
       }
@@ -342,7 +357,8 @@ const Section01 = (
   const textArray = ["프론트엔드", "노력하는", "REACT", "공부하는"];
   const displayText = useTextEffect({ texts: textArray });
   const [moveText, setMoveText] = useState<boolean>(true);
-  // console.log(mobileSize);
+  const [showScore, setShowScore] = useState<boolean>(false);
+
   const iconRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
   const engineRef = useRef<Matter.Engine>();
@@ -357,8 +373,15 @@ const Section01 = (
   const JUMP_HEIGHT = 50; // 점프 높이 (px)
 
   const handleCharter = useCallback((e: KeyboardEvent<HTMLDivElement>) => {
-    // setMoveText(false);
     if (moveText) setMoveText(false);
+
+    const characterWidth =
+      myIconRef.current?.getBoundingClientRect().width || 0;
+    const screenWidth = window.innerWidth;
+    // 초기 위치 (left: 10%)를 고려한 기준점
+    const baseX = screenWidth * 0.1;
+    // 이동 가능한 최대 범위 (전체 화면의 80% 정도)
+    const maxMoveRange = screenWidth * 0.9;
 
     const vwToPx = (vw: number) => (window.innerWidth * vw) / 100;
     if (e.key === "Alt") {
@@ -368,19 +391,45 @@ const Section01 = (
       }, 300);
     }
 
+    // switch (e.key) {
+    //   case "ArrowLeft":
+    //     setIsLeft(true);
+    //     setPosition((prev: Position) => ({
+    //       ...prev,
+    //       x: Math.max(-vwToPx(10), prev.x - vwToPx(MOVE_AMOUNT)),
+    //     }));
+    //     break;
+    //   case "ArrowRight":
+    //     setIsLeft(false);
+    //     setPosition((prev: Position) => ({
+    //       ...prev,
+    //       x: Math.min(vwToPx(70), prev.x + vwToPx(MOVE_AMOUNT)),
+    //     }));
+    //     break;
+    // }
     switch (e.key) {
       case "ArrowLeft":
+        e.preventDefault();
         setIsLeft(true);
         setPosition((prev: Position) => ({
           ...prev,
-          x: Math.max(-vwToPx(10), prev.x - vwToPx(MOVE_AMOUNT)),
+          // 왼쪽으로는 초기 위치에서 약간의 여유만 주기
+          x: Math.max(
+            -baseX + characterWidth,
+            prev.x - (screenWidth * MOVE_AMOUNT) / 100
+          ),
         }));
         break;
       case "ArrowRight":
+        e.preventDefault();
         setIsLeft(false);
         setPosition((prev: Position) => ({
           ...prev,
-          x: Math.min(vwToPx(70), prev.x + vwToPx(MOVE_AMOUNT)),
+          // 오른쪽으로는 화면의 80% 정도까지만 이동 가능
+          x: Math.min(
+            maxMoveRange - characterWidth * 2,
+            prev.x + (screenWidth * MOVE_AMOUNT) / 100
+          ),
         }));
         break;
     }
@@ -397,108 +446,158 @@ const Section01 = (
     const engine = Engine.create();
     engineRef.current = engine;
 
-    const render = Render.create({
-      element: sceneRef.current!,
-      engine: engine,
-      options: {
-        width: sceneRef.current!.clientWidth,
-        height: window.innerHeight,
-        wireframes: false,
-        background: "transparent",
-      },
+    const getRem = (rem: number) =>
+      rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+    const getViewportSize = () => ({
+      width: window.innerWidth * 0.96,
+      height: window.innerHeight,
+      bottomOffset: getRem(8),
     });
 
-    blockRefs.current.forEach((block) => {
-      if (!block) return;
+    const createRender = () => {
+      return Render.create({
+        element: sceneRef.current!,
+        engine: engine,
+        options: {
+          width: sceneRef.current!.clientWidth,
+          height: window.innerHeight,
+          wireframes: false,
+          background: "transparent",
+        },
+      });
+    };
 
-      const rect = block.getBoundingClientRect();
-      const blockBody = Bodies.rectangle(
-        rect.x + rect.width / 2,
-        rect.y + rect.height / 2,
-        rect.width,
-        rect.height,
-        {
-          isStatic: true,
-          render: { fillStyle: "transparent" },
-        }
-      );
-      World.add(engine.world, blockBody);
-    });
+    const blockBodiesRef: Matter.Body[] = [];
 
-    if (myIconRef.current) {
+    const createBlocks = () => {
+      blockBodiesRef.forEach((block) => World.remove(engine.world, block));
+      blockRefs.current.forEach((block) => {
+        if (!block) return;
+        const rect = block.getBoundingClientRect();
+        const blockBody = Bodies.rectangle(
+          rect.x + rect.width / 2,
+          rect.y + rect.height / 2,
+          rect.width,
+          rect.height,
+          {
+            isStatic: true,
+            render: { fillStyle: "transparent" },
+          }
+        );
+        blockBodiesRef.push(blockBody);
+        World.add(engine.world, blockBody);
+      });
+
+      return blockBodiesRef;
+    };
+
+    const createCharacter = () => {
+      if (!myIconRef.current) return null;
+      const { height, bottomOffset } = getViewportSize();
       const iconRect = myIconRef.current.getBoundingClientRect();
+      const characterSize = iconRect.width;
+
       const iconBody = Bodies.rectangle(
-        iconRect.x + iconRect.width / 2, // 이미지의 실제 위치 사용
-        window.innerHeight - 120,
-        96,
-        96,
-        // iconRect.width,
-        // iconRect.height,
+        iconRect.x + characterSize / 2,
+        height - bottomOffset - characterSize / 2,
+        characterSize,
+        characterSize,
         {
           render: {
             fillStyle: "transparent",
-            visible: true, // 디버깅용
+            visible: true,
           },
           friction: 0.05,
           restitution: 0.2,
-          density: 0.001,
-          isStatic: false, // 중력 영향을 받도록
+          density: 5,
+          mass: 10,
+          isStatic: false,
           collisionFilter: {
-            category: 0x0002, // 캐릭터 카테고리
-            mask: 0xffffffff, // 모든 것과 충돌
+            category: 0x0002,
+            mask: 0xffffffff,
           },
         }
       );
+      return iconBody;
+    };
 
-      iconBodyRef.current = iconBody; // ref에 저장
+    const createWalls = () => {
+      const { width, height, bottomOffset } = getViewportSize();
 
-      // 위치 업데이트 이벤트
-      World.add(engine.world, iconBodyRef.current);
+      return [
+        Bodies.rectangle(width / 2, height, width, bottomOffset * 2, {
+          isStatic: true,
+          render: { fillStyle: "transparent" },
+          collisionFilter: {
+            category: 0x0001,
+            mask: 0xffffffff,
+          },
+        }),
+        // 왼쪽 벽 (더 길게)
+        Bodies.rectangle(20, height / 2, 10, height, {
+          isStatic: true,
+          render: { fillStyle: "transparent" },
+          collisionFilter: {
+            category: 0x0001,
+            mask: 0xffffffff,
+          },
+        }),
+        // 오른쪽 벽 (더 길게)
+        Bodies.rectangle(width + 30, height / 2, 10, height, {
+          isStatic: true,
+          render: { fillStyle: "transparent" },
+          collisionFilter: {
+            category: 0x0001,
+            mask: 0xffffffff,
+          },
+        }),
+      ];
+    };
+
+    const render = createRender();
+    createBlocks();
+    const character = createCharacter();
+    if (character) {
+      iconBodyRef.current = character;
+      World.add(engine.world, character);
     }
 
-    const walls = [
-      // 바닥
-      Bodies.rectangle(
-        window.innerWidth / 2,
-        window.innerHeight,
-        window.innerWidth,
-        260,
-        {
-          isStatic: true,
-          render: { fillStyle: "transparent" },
-          collisionFilter: {
-            category: 0x0001, // 벽 카테고리
-            mask: 0xffffffff, // 모든 것과 충돌
-          },
-        }
-      ),
-      // 왼쪽 벽
-      Bodies.rectangle(0, window.innerHeight / 2, 60, window.innerHeight, {
-        isStatic: true,
-        render: { fillStyle: "transparent" },
-        collisionFilter: {
-          category: 0x0001, // 벽 카테고리
-          mask: 0xffffffff, // 모든 것과 충돌
-        },
-      }),
-      // 오른쪽 벽
-      Bodies.rectangle(
-        window.innerWidth,
-        window.innerHeight / 2,
-        60,
-        window.innerHeight,
-        {
-          isStatic: true,
-          render: { fillStyle: "transparent" },
-          collisionFilter: {
-            category: 0x0001, // 벽 카테고리
-            mask: 0xffffffff, // 모든 것과 충돌
-          },
-        }
-      ),
-    ];
-
+    let walls = createWalls();
     World.add(engine.world, walls);
+    let blockBodies = createBlocks();
+    createCharacter();
+
+    const handleResize = () => {
+      render.canvas.width = sceneRef.current!.clientWidth;
+      render.canvas.height = window.innerHeight;
+
+      walls.forEach((wall) => World.remove(engine.world, wall));
+      walls = createWalls();
+      World.add(engine.world, walls);
+
+      blockBodies.forEach((block) => World.remove(engine.world, block));
+      blockBodies = createBlocks();
+
+      if (iconBodyRef.current && myIconRef.current) {
+        const { height, bottomOffset } = getViewportSize();
+        const iconRect = myIconRef.current.getBoundingClientRect();
+        const characterSize = iconRect.width;
+
+        const scale =
+          characterSize /
+          (iconBodyRef.current.bounds.max.x - iconBodyRef.current.bounds.min.x);
+        Matter.Body.scale(iconBodyRef.current, scale, scale);
+
+        const baseX = window.innerWidth * 0.1;
+        const newX = baseX + position.x;
+        const newY = height - bottomOffset - characterSize / 2 + position.y;
+        Matter.Body.setPosition(iconBodyRef.current, {
+          x: newX,
+          y: newY,
+        });
+      }
+    };
+    window.addEventListener("resize", handleResize);
 
     const createStar = () => {
       if (!dropdownStarRef.current) return;
@@ -513,7 +612,6 @@ const Section01 = (
       starElement.style.pointerEvents = "none";
       dropdownStarRef.current.appendChild(starElement);
 
-      // Matter.js 물리 객체 생성
       const star = Bodies.circle(
         Math.random() * (window.innerWidth - 100) + 50,
         -50,
@@ -524,31 +622,47 @@ const Section01 = (
           },
           restitution: 0.6,
           friction: 0.05,
-          density: 0.1,
+          density: 0.001,
+          mass: 0.1,
           frictionAir: 0.001,
           collisionFilter: {
-            category: 0x0004, // 별 카테고리
-            mask: 0xffffffff, // 모든 것과 충돌
+            category: 0x0004,
+            mask: 0xffffffff,
           },
         }
       );
-      Matter.Events.on(engine, "collisionStart", (event) => {
-        event.pairs.forEach((pair) => {
-          // 충돌한 두 물체 중 하나가 star이고 다른 하나가 iconBodyRef.current인 경우만 처리
-          if (
-            (pair.bodyA === star && pair.bodyB === iconBodyRef.current) ||
-            (pair.bodyA === iconBodyRef.current && pair.bodyB === star)
-          ) {
-            // console.log("crush");
 
-            // 별만 위로 튕기게 함
-            Matter.Body.setVelocity(star, {
-              x: star.velocity.x,
-              y: -15,
-            });
-          }
+      if (!mobileSize) {
+        Matter.Events.on(engine, "collisionStart", (event) => {
+          event.pairs.forEach((pair) => {
+            if (
+              (pair.bodyA === star && pair.bodyB === iconBodyRef.current) ||
+              (pair.bodyA === iconBodyRef.current && pair.bodyB === star)
+            ) {
+              Matter.Body.setVelocity(star, {
+                x: star.velocity.x * 1.5,
+                y: -15,
+              });
+
+              // 캐릭터의 속도는 최소화
+              if (iconBodyRef.current) {
+                Matter.Body.setVelocity(iconBodyRef.current, {
+                  x: iconBodyRef.current.velocity.x * 0.1,
+                  y: iconBodyRef.current.velocity.y * 0.1,
+                });
+              }
+
+              setShowScore(true);
+
+              setTimeout(() => {
+                setShowScore(false);
+                Matter.World.remove(engine.world, star);
+                starElement.remove();
+              }, 300);
+            }
+          });
         });
-      });
+      }
 
       const updateListener = () => {
         starElement.style.left = `${star.position.x - randomStar.size / 2}px`;
@@ -557,7 +671,10 @@ const Section01 = (
         if (star.position.y > window.innerHeight + randomStar.size) {
           Matter.Events.off(engine, "afterUpdate", updateListener);
           World.remove(engine.world, star);
-          starElement.remove();
+          // 부모 노드 확인 후 제거
+          if (starElement.parentNode) {
+            starElement.parentNode.removeChild(starElement);
+          }
         }
       };
 
@@ -565,9 +682,8 @@ const Section01 = (
       World.add(engine.world, star);
     };
 
-    const starInterval = setInterval(createStar, 500000);
+    const starInterval = setInterval(createStar, 4000);
 
-    // Engine.run(engine);
     const runner = Runner.create();
     Runner.run(runner, engine);
     Render.run(render);
@@ -578,6 +694,7 @@ const Section01 = (
       World.clear(engine.world, false);
       Engine.clear(engine);
       render.canvas.remove();
+      window.removeEventListener("resize", handleResize);
       if (iconBodyRef.current) {
         World.remove(engine.world, iconBodyRef.current);
       }
@@ -663,11 +780,16 @@ const Section01 = (
           {moveText && (
             <div className="iconArrow">
               <img src="/pixelart/arr.png" alt="arrow" />
-              <p>move me!</p>
+              <div>
+                <p>move me!</p>
+                <p>
+                  ← → alt <small>keydown!</small>{" "}
+                </p>
+              </div>
             </div>
           )}
-
-          <img
+          <div
+            className="iconCharter"
             ref={myIconRef}
             style={{
               transform: `translate(${position.x}px, ${position.y}px) scaleX(${
@@ -678,9 +800,19 @@ const Section01 = (
               outline: "none",
               marginLeft: "-30px",
             }}
-            src="/pixelart/pixelicon.png"
-            alt="pixelicon"
-          />
+          >
+            {showScore && (
+              <p
+                style={{
+                  transform: `scaleX(${isLeft ? -1 : 1}) `,
+                }}
+                className="iconCharter_score"
+              >
+                + 1
+              </p>
+            )}
+            <img src="/pixelart/pixelicon.png" alt="pixelicon" />
+          </div>
         </div>
         <div className="dropdownStar" ref={dropdownStarRef}></div>
       </article>

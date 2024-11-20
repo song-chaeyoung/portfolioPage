@@ -224,24 +224,24 @@
       "desc": "넷플릭스 설명입니다."
     },
     {
-      "id": 5,
+      "id": 6,
       "category": "javascript",
       "title": "싸이월드",
-      "skills": ["javascript", "iframe", "Canvas"],
+      "skills": ["Javascript", "iframe", "Canvas", "LocalStorage"],
       "links": [
         {
           "type": "github",
-          "link": "url/주소"
+          "link": "https://github.com/song-chaeyoung/cyworld"
         },
         {
           "type": "website",
-          "link": "url/주소"
+          "link": "https://cyworld-scy.netlify.app/"
         }
       ],
-      "desc": "넷플릭스 설명입니다."
+      "desc": "싸이월드 설명입니다."
     },
     {
-      "id": 6,
+      "id": 7,
       "category": "typescript",
       "title": "투두리스트(드래그앤 드롭)",
       "skills": ["TypeScript", "React", "react-beautiful-dnd"],
@@ -258,7 +258,7 @@
       "desc": "투두리스트 설명입니다."
     },
     {
-      "id": 7,
+      "id": 8,
       "category": "react",
       "title": "겨울간식 mbti",
       "skills": ["React", "react-router-dom", "KaKao AdFit", "KaKaoShare"],
@@ -275,7 +275,7 @@
       "desc": "겨울간식 mbti 설명입니다."
     },
     {
-      "id": 8,
+      "id": 9,
       "category": "react",
       "img": ["url/주소", "url/주소", "url/주소"],
       "title": "지그재그",
@@ -293,7 +293,7 @@
       "desc": "지그재그 사이트 설명입니다."
     },
     {
-      "id": 9,
+      "id": 10,
       "category": "javascript",
       "img": ["url/주소", "url/주소", "url/주소"],
       "title": "셀렉토커피",
@@ -311,7 +311,7 @@
       "desc": "셀렉토커피 사이트 설명입니다."
     },
     {
-      "id": 10,
+      "id": 11,
       "category": "react",
       "img": ["url/주소", "url/주소", "url/주소"],
       "title": "이모션 다이어리",

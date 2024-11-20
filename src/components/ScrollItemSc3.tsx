@@ -38,14 +38,14 @@ const Container = styled.li<{ x: number; y: number }>`
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 0.94rem 1.88rem;
+      padding: 0.6rem 1rem;
       border: 1px solid #fff;
       border-radius: 0.625rem;
       background: #000;
       border-top: none;
       &:nth-child(1) {
         background: transparent;
-        font-size: 2rem;
+        font-size: 2.2rem;
         font-family: "DungGeunMo";
         padding: 1.25rem 1.88rem;
         color: var(--main-color);
@@ -54,11 +54,13 @@ const Container = styled.li<{ x: number; y: number }>`
       }
       h3 {
         font-family: "DungGeunMo";
-        font-size: 1.375rem;
+        font-size: 1.7rem;
         margin-bottom: 0.315rem;
       }
       p {
-        font-size: 0.875rem;
+        font-family: "DungGeunMo";
+        font-size: 0.9rem;
+        line-height: 1.2;
       }
     }
   }
