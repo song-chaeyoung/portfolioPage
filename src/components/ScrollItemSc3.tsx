@@ -58,7 +58,7 @@ const Container = styled.li<{ x: number; y: number }>`
         margin-bottom: 0.315rem;
       }
       p {
-        font-family: "DungGeunMo";
+        /* font-family: "DungGeunMo"; */
         font-size: 0.9rem;
         line-height: 1.2;
       }

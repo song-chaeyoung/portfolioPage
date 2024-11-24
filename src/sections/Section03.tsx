@@ -206,7 +206,7 @@ const Section3 = (_: any, ref: React.ForwardedRef<HTMLDivElement>) => {
       const width = sectionRef.current.scrollWidth - window.innerHeight;
       const skillItems = document.querySelectorAll(".skillItem");
       // const speed = 0.8 + index * 0.2;
-      const speedOptions = [0.06, 0.1, 0.25, 0.09, 0.03];
+      const speedOptions = [0.06, 0.1, 0.25, 0.09, 0.03, 0.09];
 
       skillItems.forEach((item, index) => {
         const speed = speedOptions[index % speedOptions.length];

@@ -305,7 +305,15 @@ const ComputerDisplaySc4 = () => {
               <img src="/pixelart/documents.png" alt="documents" />
               <p>TypeScript</p>
             </motion.div>
-
+            <motion.div
+              className="icon"
+              drag
+              dragMomentum={false}
+              onClick={() => folderOpen("nextjs")}
+            >
+              <img src="/pixelart/documents.png" alt="documents" />
+              <p>NextJS</p>
+            </motion.div>
             <motion.div
               className="icon"
               drag

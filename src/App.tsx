@@ -164,6 +164,9 @@ const App = () => {
     section2.current?.scrollIntoView({ block: "start" });
     // section2.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+  const onMoveBox = () => {
+    section2.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
   const onSection3 = () => {
     if (section3.current) {
       // ScrollTrigger 초기화
@@ -235,7 +238,7 @@ const App = () => {
               onSection4={onSection4}
             />
             <Main ref={allSection}>
-              <Section01 onMoveBox={onSection2} ref={section1} />
+              <Section01 onMoveBox={onMoveBox} ref={section1} />
               <Section02 ref={section2} />
               <Section03 ref={section3} />
               <Section04 ref={section4} />
