@@ -215,7 +215,7 @@ const Section3 = (_: any, ref: React.ForwardedRef<HTMLDivElement>) => {
             trigger: triggerRef.current,
             start: "top top",
             end: () => `+=${width}`,
-            scrub: 1,
+            scrub: 2,
             // pin: false, // 개별 아이템은 pin하지 않음
             invalidateOnRefresh: true, // 화면 크기 변경 시 재계산
           },

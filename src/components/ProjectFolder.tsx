@@ -75,6 +75,7 @@ const Container = styled(motion.div)<{ $zIndex: number }>`
   }
 
   .project_contents {
+    width: 100%;
     height: fit-content;
     display: flex;
     align-items: center;
@@ -83,6 +84,7 @@ const Container = styled(motion.div)<{ $zIndex: number }>`
     .project_img {
       flex: 1;
       width: 38.375rem;
+      min-width: 30rem;
       background: #d9d9d9;
       border: 1px solid #efefef;
       img {
@@ -92,6 +94,7 @@ const Container = styled(motion.div)<{ $zIndex: number }>`
       }
     }
     .project_desc {
+      width: 100%;
       flex: 1;
       color: #000;
       display: flex;
@@ -106,8 +109,8 @@ const Container = styled(motion.div)<{ $zIndex: number }>`
       }
       .tags {
         display: flex;
-        gap: 0.75rem;
-        flex-wrap: nowrap;
+        gap: 0.5rem 0.75rem;
+        flex-wrap: wrap;
         .tag {
           border-radius: 0.375rem;
           border: 1px solid #555;
@@ -116,7 +119,7 @@ const Container = styled(motion.div)<{ $zIndex: number }>`
           justify-content: center;
           align-items: center;
           font-size: 0.875rem;
-          color: #555;
+          color: #333;
           letter-spacing: -0.0625rem;
           white-space: nowrap;
         }

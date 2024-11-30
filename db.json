@@ -41,12 +41,16 @@
           "desc": "서버 사이드 렌더링과 정적 사이트 생성을 통해 SEO와 로딩 속도를 최적화하며, 동적인 웹 애플리케이션을 구축할 수 있습니다."
         },
         {
-          "name": "Tailwind CSS",
-          "desc": "유틸리티 클래스 기반으로 빠르게 UI를 스타일링하고, 일관된 디자인 시스템을 유지할 수 있습니다."
+          "name": "Node.js",
+          "desc": "Express.js를 사용해 서버 측 로직을 구현하고, 데이터베이스와 통신하여 동적인 웹 애플리케이션을 구축할 수 있습니다."
         },
         {
           "name": "Redux",
           "desc": "전역 상태 관리를 통해 데이터 흐름을 일관성 있게 유지하고, 복잡한 상태를 손쉽게 관리할 수 있습니다."
+        },
+        {
+          "name": "Recoil",
+          "desc": "상태 관리를 통해 컴포넌트 간 데이터 공유를 쉽게 할 수 있습니다."
         },
         {
           "name": "React Router Dom",
@@ -66,6 +70,10 @@
         {
           "name": "Three.js",
           "desc": "3D 그래픽 렌더링을 통해 웹에서 시각적 요소와 인터랙션을 강화하여 풍부한 사용자 경험을 제공할 수 있습니다."
+        },
+        {
+          "name": "Tailwind CSS",
+          "desc": "유틸리티 클래스 기반으로 빠르게 UI를 스타일링하고, 일관된 디자인 시스템을 유지할 수 있습니다."
         }
       ]
     },
@@ -80,6 +88,10 @@
         },
         {
           "name": "Netlify",
+          "desc": "지속적인 배포(CI/CD)와 호스팅을 통해 빠르고 안정적인 배포 환경을 제공하여 사이트의 성능을 최적화할 수 있습니다."
+        },
+        {
+          "name": "Vercel",
           "desc": "지속적인 배포(CI/CD)와 호스팅을 통해 빠르고 안정적인 배포 환경을 제공하여 사이트의 성능을 최적화할 수 있습니다."
         }
       ]
@@ -127,6 +139,57 @@
   "projectItems": [
     {
       "id": 0,
+      "category": "react",
+      "title": "약과",
+      "skills": [
+        "React",
+        "ChatGPT API",
+        "Restful API",
+        "Firebase",
+        "react-query",
+        "recoil",
+        "react-spinners",
+        "styled-components"
+      ],
+      "links": [
+        {
+          "type": "github",
+          "link": "https://github.com/song-chaeyoung/yakgwa"
+        },
+        {
+          "type": "figma",
+          "link": "url/주소"
+        },
+        {
+          "type": "website",
+          "link": "https://yakgwa-app.web.app"
+        }
+      ],
+      "desc": "ChatGPT API와 공공데이터포털을 활용하여 병명 검색, 약 추천, 약 검색 기능을 제공하는 헬스케어 웹사이트를 개발했습니다. 디자인 및 기획 단계에서 사용자 경험과 접근성을 고려해 직관적인 UI를 설계하였으며, react-query와 recoil을 사용해 상태 관리와 데이터 패칭을 최적화하였습니다. 또한, Firestore Database를 이용한 익명로그인 및 즐겨찾기 기능을 구현하고, Firebase를 이용해 프로젝트를 배포하여 실제 웹 환경에서 작동 가능하도록 구현했습니다."
+    },
+    {
+      "id": 1,
+      "category": "typescript",
+      "title": "Portfolio",
+      "skills": ["Personal-Project", "TypeScript", "React", "GSAP", "FIGMA"],
+      "links": [
+        {
+          "type": "github",
+          "link": "https://github.com/song-chaeyoung/portfolioPage"
+        },
+        {
+          "type": "figma",
+          "link": "https://www.figma.com/design/iqhF78G7w4sR4UyxD3Xe7f/%EC%86%A1%EC%B1%84%EC%98%81-%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4?node-id=0-1&t=91Djfk1R1hTw6sJP-1"
+        },
+        {
+          "type": "website",
+          "link": "url/주소"
+        }
+      ],
+      "desc": "Portfolio 설명입니다."
+    },
+    {
+      "id": 2,
       "category": "javascript",
       "title": "Oliveyoung-Website",
       "skills": ["Team-Project", "JavaScirpt", "HTML", "CSS", "FIGMA"],
@@ -147,7 +210,7 @@
       "desc": "올리브영 웹사이트의 UI/UX 개선을 목표로 클론 코딩 프로젝트를 진행했습니다. 디자인 및 기획 단계에서 웹사이트의 접근성과 사용자 경험을 고려하여 실제 웹사이트와 유사하게 구현했습니다. 로컬 스토리지를 활용해 장바구니 기능을 추가했으며, Firebase를 이용해 배포하였습니다."
     },
     {
-      "id": 1,
+      "id": 3,
       "category": "react",
       "title": "KaKaoStory",
       "skills": ["Team-Project", "React", "Firebase", "FIGMA"],
@@ -166,48 +229,6 @@
         }
       ],
       "desc": "카카오스토리 설명입니다."
-    },
-    {
-      "id": 2,
-      "category": "typescript",
-      "title": "Protfolio",
-      "skills": ["Personal-Project", "TypeScript", "React", "GSAP", "FIGMA"],
-      "links": [
-        {
-          "type": "github",
-          "link": "url/주소"
-        },
-        {
-          "type": "figma",
-          "link": "url/주소"
-        },
-        {
-          "type": "website",
-          "link": "url/주소"
-        }
-      ],
-      "desc": "Protfolio 설명입니다."
-    },
-    {
-      "id": 4,
-      "category": "react",
-      "title": "약과",
-      "skills": ["React", "Framer Motion", "FIGMA"],
-      "links": [
-        {
-          "type": "github",
-          "link": "url/주소"
-        },
-        {
-          "type": "figma",
-          "link": "url/주소"
-        },
-        {
-          "type": "website",
-          "link": "url/주소"
-        }
-      ],
-      "desc": "약과 설명입니다."
     },
     {
       "id": 5,
