@@ -29,7 +29,7 @@
     },
     {
       "title": "Frontend-1",
-      "x": 53,
+      "x": 59,
       "y": 9,
       "items": [
         {
@@ -60,8 +60,8 @@
     },
     {
       "title": "Frontend-2",
-      "x": 70,
-      "y": 9,
+      "x": 80,
+      "y": 22,
       "items": [
         {
           "name": "Styled-Components",
@@ -72,6 +72,10 @@
           "desc": "3D 그래픽 렌더링을 통해 웹에서 시각적 요소와 인터랙션을 강화하여 풍부한 사용자 경험을 제공할 수 있습니다."
         },
         {
+          "name": "GSAP",
+          "desc": "애니메이션 효과를 적용하여 사용자 경험을 향상시킬 수 있습니다."
+        },
+        {
           "name": "Tailwind CSS",
           "desc": "유틸리티 클래스 기반으로 빠르게 UI를 스타일링하고, 일관된 디자인 시스템을 유지할 수 있습니다."
         }
@@ -79,7 +83,7 @@
     },
     {
       "title": "Data & Deployment",
-      "x": 75,
+      "x": 85,
       "y": 30,
       "items": [
         {
@@ -92,13 +96,17 @@
         },
         {
           "name": "Vercel",
-          "desc": "지속적인 배포(CI/CD)와 호스팅을 통해 빠르고 안정적인 배포 환경을 제공하여 사이트의 성능을 최적화할 수 있습니다."
+          "desc": "클라우드 플랫폼을 통해 안정적인 서버 호스팅과 데이터 관리를 제공하여 사이트의 성능을 최적화할 수 있습니다."
+        },
+        {
+          "name": "AWS",
+          "desc": "클라우드 플랫폼을 통해 안정적인 서버 호스팅과 데이터 관리를 제공하여 사이트의 성능을 최적화할 수 있습니다."
         }
       ]
     },
     {
       "title": "Design",
-      "x": 84,
+      "x": 100,
       "y": 40,
       "items": [
         {
@@ -117,7 +125,7 @@
     },
     {
       "title": "ETC",
-      "x": 99,
+      "x": 120,
       "y": 20,
       "items": [
         {
@@ -183,7 +191,7 @@
         },
         {
           "type": "website",
-          "link": "url/주소"
+          "link": "songchaeyoung-portfolio.web.app"
         }
       ],
       "desc": "Portfolio 설명입니다."
@@ -231,7 +239,7 @@
       "desc": "카카오스토리 설명입니다."
     },
     {
-      "id": 5,
+      "id": 4,
       "category": "react",
       "title": "넷플릭스",
       "skills": ["React", "Redux", "AplloServer"],
@@ -251,27 +259,11 @@
       ],
       "desc": "넷플릭스 설명입니다."
     },
+
     {
-      "id": 6,
-      "category": "javascript",
-      "title": "싸이월드",
-      "skills": ["Javascript", "iframe", "Canvas", "LocalStorage"],
-      "links": [
-        {
-          "type": "github",
-          "link": "https://github.com/song-chaeyoung/cyworld"
-        },
-        {
-          "type": "website",
-          "link": "https://cyworld-scy.netlify.app/"
-        }
-      ],
-      "desc": "싸이월드 설명입니다."
-    },
-    {
-      "id": 7,
+      "id": 5,
       "category": "typescript",
-      "title": "투두리스트(드래그앤 드롭)",
+      "title": "TodoList(드래그앤 드롭)",
       "skills": ["TypeScript", "React", "react-beautiful-dnd"],
       "links": [
         {
@@ -286,7 +278,7 @@
       "desc": "투두리스트 설명입니다."
     },
     {
-      "id": 8,
+      "id": 6,
       "category": "react",
       "title": "겨울간식 mbti",
       "skills": ["React", "react-router-dom", "KaKao AdFit", "KaKaoShare"],
@@ -303,9 +295,31 @@
       "desc": "겨울간식 mbti 설명입니다."
     },
     {
-      "id": 9,
+      "id": 7,
       "category": "react",
-      "img": ["url/주소", "url/주소", "url/주소"],
+      "title": "suika game",
+      "skills": [
+        "React",
+        "matter.js",
+        "react-router-dom",
+        "firestore database",
+        "vite"
+      ],
+      "links": [
+        {
+          "type": "github",
+          "link": "https://github.com/song-chaeyoung/suika-game"
+        },
+        {
+          "type": "website",
+          "link": "https://gamedb-ee2c0.web.app/"
+        }
+      ],
+      "desc": "Matter.js를 이용해 게임의 주요 물리 엔진 기능을 구현하여 사실감 있는 게임 플레이를 제공했습니다. Firestore Database를 활용해 사용자의 게임 점수를 영구적으로 저장하고, 이를 기반으로 실시간 랭킹 시스템을 구축하여 이용자들이 순위를 확인할 수 있도록 했습니다. react-router-dom을 사용해 페이지 전환을 효율적으로 구현했으며, Vite를 통해 빠르고 최적화된 개발 환경을 제공했습니다."
+    },
+    {
+      "id": 8,
+      "category": "react",
       "title": "지그재그",
       "skills": ["React", "react-router-dom"],
       "links": [
@@ -321,22 +335,21 @@
       "desc": "지그재그 사이트 설명입니다."
     },
     {
-      "id": 10,
-      "category": "javascript",
-      "img": ["url/주소", "url/주소", "url/주소"],
-      "title": "셀렉토커피",
-      "skills": ["JavaScript", "HTML", "CSS"],
+      "id": 9,
+      "category": "react",
+      "title": "TodoList",
+      "skills": ["React", "LocalStorage", "styled-components", "Firebase"],
       "links": [
         {
           "type": "github",
-          "link": "url/주소"
+          "link": "https://github.com/song-chaeyoung/FrontEnd-Class/tree/main/custom%20project/08.todolist"
         },
         {
           "type": "website",
-          "link": "url/주소"
+          "link": "https://todolist-cy.web.app"
         }
       ],
-      "desc": "셀렉토커피 사이트 설명입니다."
+      "desc": "React, LocalStorage을 활용하여 CRUD 기능이 가능한 투두리스트 개발했습니다. LocalStorage를 이용해 사용자가 작성한 내용을 브라우저에 저장할 수 있어 편리한 데이터 관리가 가능합니다. React를 기반으로 컴포넌트화된 구조를 구현하여 유지보수가 용이하며, styled-components로 스타일링하여 사용자 친화적이고 직관적인 UI를 제공했습니다. 또한, Firebase를 활용해 배포를 처리하여 안정적인 서비스 환경을 구축했습니다."
     },
     {
       "id": 11,
@@ -355,6 +368,47 @@
         }
       ],
       "desc": "이모션 다이어리 사이트 설명입니다."
+    },
+    {
+      "id": 12,
+      "category": "javascript",
+      "title": "싸이월드",
+      "skills": [
+        "Javascript",
+        "SCSS",
+        "iframe",
+        "Canvas",
+        "LocalStorage",
+        "Netlify"
+      ],
+      "links": [
+        {
+          "type": "github",
+          "link": "https://github.com/song-chaeyoung/cyworld"
+        },
+        {
+          "type": "website",
+          "link": "https://cyworld-scy.netlify.app/"
+        }
+      ],
+      "desc": "JavaScript, iframe, Canvas, 그리고 LocalStorage를 활용하여 싸이월드 클론 코딩 프로젝트를 진행했습니다. Canvas를 통해 사용자가 그림을 그릴 수 있는 기능을 구현하여 자유로운 표현이 가능하도록 했습니다. 또한, LocalStorage를 활용해 일촌평(사용자 간의 댓글 및 메모)을 작성하고 저장할 수 있는 기능을 제공하여 사용자 간의 상호작용을 강조했습니다. iframe을 사용하여 미니홈피처럼 구성된 다양한 콘텐츠를 불러올 수 있도록 구현했습니다."
+    },
+    {
+      "id": 13,
+      "category": "javascript",
+      "title": "셀렉토커피",
+      "skills": ["JavaScript", "HTML", "CSS", "Swiper"],
+      "links": [
+        {
+          "type": "github",
+          "link": "https://github.com/song-chaeyoung/selecto"
+        },
+        {
+          "type": "website",
+          "link": "https://selecto-coffee-cy.netlify.app/"
+        }
+      ],
+      "desc": "셀렉토커피 사이트 설명입니다."
     }
   ]
 }

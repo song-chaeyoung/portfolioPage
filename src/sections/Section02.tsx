@@ -1,8 +1,7 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import React, { forwardRef, useContext, useEffect } from "react";
+import { forwardRef, useEffect } from "react";
 import styled from "styled-components";
-import { mobileSizeContext } from "../App";
 
 const Container = styled.section`
   width: 100%;
@@ -154,28 +153,26 @@ const Container = styled.section`
 gsap.registerPlugin(ScrollTrigger);
 
 const Section02 = forwardRef<HTMLElement>((_, ref) => {
-  const mobileSize = useContext(mobileSizeContext);
-
   useEffect(() => {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: ".se2Continaer",
-        start: "top 60%", // 시작 지점을 더 일찍으로 조정
-        end: "center center", // 끝나는 지점 조정
-        scrub: 1.5, // 스크롤 속도와 애니메이션 속도의 관계를 부드럽게 조정
+        start: "top 60%",
+        end: "center center",
+        scrub: 1.5,
         toggleActions: "play none none reverse",
       },
     });
     tl.fromTo(
       ".qna",
-      { opacity: 0, y: 50, scale: 0.8 }, // 시작값 조정
-      { opacity: 1, y: 0, scale: 1, duration: 1 } // duration 감소, blur 효과 제거
+      { opacity: 0, y: 50, scale: 0.8 },
+      { opacity: 1, y: 0, scale: 1, duration: 1 }
     )
       .fromTo(
         ".eduInfo",
         { opacity: 0, y: 50, scale: 0.8 },
         { opacity: 1, y: 0, scale: 1, duration: 1 },
-        "-=0.5" // 이전 애니메이션과 약간 겹치게 실행
+        "-=0.5"
       )
       .fromTo(
         ".workInfo",
@@ -194,10 +191,6 @@ const Section02 = forwardRef<HTMLElement>((_, ref) => {
         <ul className="profileText">
           <li className="title">
             <h2>안녕하세요 프론트엔드 송채영입니다</h2>
-            {/* <h5>
-              저는 끊임없는 도전을 즐기며, 웹세상을 새롭게 만드는 웹 개발의
-              매력에 빠져있습니다.
-            </h5> */}
           </li>
           <li className="qna">
             <h4>첫인상을 사로잡는 프론트엔드</h4>

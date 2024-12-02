@@ -1,12 +1,11 @@
 import styled from "styled-components";
 import Folder from "./Folder";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { myData } from "../api";
 import { Project } from "../type";
 import { AnimatePresence } from "framer-motion";
 import TextFolder from "./TextFolder";
 import { motion } from "framer-motion";
-import Bomb from "./Bomb";
 
 const Container = styled.div`
   width: 100%;
@@ -305,7 +304,7 @@ const ComputerDisplaySc4 = () => {
               <img src="/pixelart/documents.png" alt="documents" />
               <p>TypeScript</p>
             </motion.div>
-            <motion.div
+            {/* <motion.div
               className="icon"
               drag
               dragMomentum={false}
@@ -313,7 +312,7 @@ const ComputerDisplaySc4 = () => {
             >
               <img src="/pixelart/documents.png" alt="documents" />
               <p>NextJS</p>
-            </motion.div>
+            </motion.div> */}
             <motion.div
               className="icon"
               drag

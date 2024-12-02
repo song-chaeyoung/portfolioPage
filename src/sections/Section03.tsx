@@ -1,7 +1,6 @@
 import { forwardRef, useContext, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { myData } from "../api";
-// import ScrollTrigger from "gsap/all";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import gsap from "gsap";
 import { Skill } from "../type";
@@ -113,19 +112,21 @@ const Section3 = (_: any, ref: React.ForwardedRef<HTMLDivElement>) => {
   const triggerRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLParagraphElement>(null);
   const [data, setData] = useState<Skill[]>([]);
-  // const dataLoaded = useRef(false);
 
   useEffect(() => {
-    (async () => {
-      const response = await myData();
-      setData(response.skills);
-      // dataLoaded.current = true;
-    })();
+    try {
+      console.log("data loading");
+      (async () => {
+        const response = await myData();
+        setData(response.skills);
+      })();
+    } catch (err) {
+      console.log(err);
+    }
   }, []);
 
   useEffect(() => {
     if (sectionRef.current) {
-      // const width = sectionRef.current.scrollWidth - window.innerHeight;
       const width = sectionRef.current.scrollWidth;
 
       const mainTl = gsap.timeline({
@@ -138,8 +139,7 @@ const Section3 = (_: any, ref: React.ForwardedRef<HTMLDivElement>) => {
           pin: true,
           pinSpacing: true,
           anticipatePin: 1,
-          id: "section3", // ID 추가
-          // fastScrollEnd: true,
+          id: "section3",
           onLeave: () => {
             ScrollTrigger.clearScrollMemory();
           },
@@ -160,7 +160,6 @@ const Section3 = (_: any, ref: React.ForwardedRef<HTMLDivElement>) => {
         trigger: sectionRef.current,
         start: "top top",
         end: "9999",
-        // end: () => `+=${width}`,
         onEnter: () => {
           textRef.current?.classList.add("fixed_position");
         },
@@ -175,24 +174,6 @@ const Section3 = (_: any, ref: React.ForwardedRef<HTMLDivElement>) => {
           textRef.current?.classList.remove("fixed_position");
         },
       });
-
-      // const skillItems = document.querySelectorAll(".skillItem");
-
-      // skillItems.forEach((item, index) => {
-      //   const speedOption = [0.5, 0.8, 1.1, 1.4, 1.7];
-      //   // const speed = speedOption[index % speedOption.length];
-      //   const speed = 0.8 + index * 0.2;
-      //   // const speed = 0.5 + Math.random();
-      //   mainTl.to(
-      //     item,
-      //     {
-      //       x: `-=${width * speed}`,
-      //       duration: 2,
-      //       ease: "none",
-      //     },
-      //     0
-      //   );
-      // });
 
       return () => {
         mainTl.scrollTrigger?.kill();
@@ -216,8 +197,7 @@ const Section3 = (_: any, ref: React.ForwardedRef<HTMLDivElement>) => {
             start: "top top",
             end: () => `+=${width}`,
             scrub: 2,
-            // pin: false, // 개별 아이템은 pin하지 않음
-            invalidateOnRefresh: true, // 화면 크기 변경 시 재계산
+            invalidateOnRefresh: true,
           },
           x: `-=${width * speed}`,
           ease: "none",

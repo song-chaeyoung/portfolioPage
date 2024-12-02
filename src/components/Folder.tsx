@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 // import "98.css";
 import styled from "styled-components";
-import { Project, Skill } from "../type";
+import { Project } from "../type";
 import { AnimatePresence, motion } from "framer-motion";
 import ProjectFolder from "./ProjectFolder";
 import { mobileSizeContext } from "../App";

@@ -1,4 +1,3 @@
-import React from "react";
 import "nes.css/css/nes.min.css";
 import styled from "styled-components";
 import { AnimatePresence, motion } from "framer-motion";

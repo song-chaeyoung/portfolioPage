@@ -17,7 +17,8 @@ const Container = styled.li<{ x: number; y: number }>`
       transform: scaleX(-1);
     }
   }
-  &:nth-child(2) {
+  &:nth-child(2),
+  &:nth-child(5) {
     img {
       display: none;
     }
@@ -58,7 +59,6 @@ const Container = styled.li<{ x: number; y: number }>`
         margin-bottom: 0.315rem;
       }
       p {
-        /* font-family: "DungGeunMo"; */
         font-size: 0.9rem;
         line-height: 1.2;
       }
@@ -68,7 +68,7 @@ const Container = styled.li<{ x: number; y: number }>`
 
 const ScrollItemSc3 = ({ data }: { data: Skill }) => {
   const { title, x, y, items } = data;
-  // console.log(x, y);
+
   const boxRef = useRef<HTMLLIElement>(null);
   return (
     <Container className="skillItem" ref={boxRef} x={x} y={y}>

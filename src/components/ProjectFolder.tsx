@@ -81,6 +81,7 @@ const Container = styled(motion.div)<{ $zIndex: number }>`
     align-items: center;
     gap: 3rem;
     padding: 0 2rem;
+    overflow-x: hidden;
     .project_img {
       flex: 1;
       width: 38.375rem;

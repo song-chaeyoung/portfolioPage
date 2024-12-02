@@ -370,7 +370,6 @@ const Section01 = (
   const [position, setPosition] = useState<Position>({ x: 0, y: 0 });
   const [isLeft, setIsLeft] = useState<boolean>(false);
   const MOVE_AMOUNT = 2;
-  const JUMP_HEIGHT = 50; // 점프 높이 (px)
 
   const handleCharter = useCallback((e: KeyboardEvent<HTMLDivElement>) => {
     if (moveText) setMoveText(false);
@@ -383,13 +382,13 @@ const Section01 = (
     // 이동 가능한 최대 범위 (전체 화면의 80% 정도)
     const maxMoveRange = screenWidth * 0.9;
 
-    const vwToPx = (vw: number) => (window.innerWidth * vw) / 100;
-    if (e.key === "Alt") {
-      setPosition((prev) => ({ ...prev, y: -JUMP_HEIGHT }));
-      setTimeout(() => {
-        setPosition((prev) => ({ ...prev, y: 0 }));
-      }, 300);
-    }
+    // const vwToPx = (vw: number) => (window.innerWidth * vw) / 100;
+    // if (e.key === "Alt") {
+    //   setPosition((prev) => ({ ...prev, y: -JUMP_HEIGHT }));
+    //   setTimeout(() => {
+    //     setPosition((prev) => ({ ...prev, y: 0 }));
+    //   }, 300);
+    // }
 
     // switch (e.key) {
     //   case "ArrowLeft":
