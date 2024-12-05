@@ -179,8 +179,6 @@ const Container = styled.section`
       top: 15%;
       width: fit-content;
       padding: 2rem 4rem;
-      /* padding: 0; */
-      /* margin: 0 1rem; */
       margin: 0 auto;
       .contact_text {
         width: 100%;
@@ -197,20 +195,17 @@ const Container = styled.section`
               }
             }
           }
-          /* i {
-            transform: scale(1.8);
-            img {
-              transform: scale(0.5);
-            }
-          } */
         }
       }
     }
     .starts {
       display: none;
     }
-    .icon_walking {
-      /* animation: iconWalkingMobile 5s linear; */
+  }
+
+  @media screen and (max-width: 480px) {
+    .ballon {
+      padding: 1rem 2rem;
     }
   }
 `;

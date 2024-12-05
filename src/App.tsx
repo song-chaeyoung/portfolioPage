@@ -107,6 +107,24 @@ const AppContainer = styled.div`
   margin: 0 auto;
 `;
 
+const TopBtn = styled.button`
+  position: fixed;
+  bottom: 3rem;
+  right: 1rem;
+  width: 2rem;
+  height: 2rem;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  @media screen and (max-width: 768px) {
+    /* width: 2rem;
+    height: 2rem; */
+    font-size: 1.2rem;
+  }
+`;
+
 const Main = styled.main`
   width: 100%;
   height: 100%;
@@ -156,6 +174,10 @@ const App = () => {
   const section3 = useRef<HTMLDivElement>(null);
   const section4 = useRef<HTMLDivElement>(null);
 
+  const onTop = () => {
+    allSection.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   const onSection1 = () => {
     section1.current?.scrollIntoView({ block: "start" });
     // section1.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -172,32 +194,26 @@ const App = () => {
       // ScrollTrigger 초기화
       const st = ScrollTrigger.getById("section3");
       if (st) {
-        st.scroll(0); // 스크롤 위치 초기화
-        st.refresh(); // ScrollTrigger 새로고침
+        st.scroll(0);
+        st.refresh();
       }
 
-      // Container 위치 초기화
       const container = section3.current.querySelector(
         'div[class*="Container"]'
       );
       if (container) {
         gsap.set(container, {
-          // gsap.to 대신 gsap.set 사용
           x: 0,
           overwrite: true,
         });
       }
 
-      // 섹션으로 스크롤
       section3.current.scrollIntoView({ block: "start" });
     }
-
-    // section3.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const onSection4 = () => {
     section4.current?.scrollIntoView({ block: "start" });
-    // section4.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const allSection = useRef<HTMLElement>(null);
@@ -237,6 +253,9 @@ const App = () => {
               onSection3={onSection3}
               onSection4={onSection4}
             />
+            <TopBtn className="nes-btn is-primary" onClick={onTop}>
+              ▲
+            </TopBtn>
             <Main ref={allSection}>
               <Section01 onMoveBox={onMoveBox} ref={section1} />
               <Section02 ref={section2} />

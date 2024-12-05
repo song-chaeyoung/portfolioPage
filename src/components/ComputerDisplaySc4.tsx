@@ -344,7 +344,7 @@ const ComputerDisplaySc4 = () => {
                     setPowerList(false);
                   }}
                 >
-                  <img src="/pixelart/iconComputer.png" alt="documents" />
+                  <img src="/pixelart/iconComputer.png" alt="iconComputer" />
                   <p>Bomb</p>
                 </li>
                 <li
