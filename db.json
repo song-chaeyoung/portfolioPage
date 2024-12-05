@@ -294,6 +294,32 @@
       "desc": "Matter.js를 이용해 게임의 주요 물리 엔진 기능을 구현하여 사실감 있는 게임 플레이를 제공했습니다. Firestore Database를 활용해 사용자의 게임 점수를 영구적으로 저장하고, 이를 기반으로 실시간 랭킹 시스템을 구축하여 이용자들이 순위를 확인할 수 있도록 했습니다. react-router-dom을 사용해 페이지 전환을 효율적으로 구현했으며, Vite를 통해 빠르고 최적화된 개발 환경을 제공했습니다."
     },
     {
+      "id": 8,
+      "category": "react",
+      "title": "ZigZag",
+      "skills": [
+        "React",
+        "react-router-dom",
+        "redux",
+        "redux-thunk",
+        "swiper",
+        "bootstrap",
+        "styled-components",
+        "Netlify"
+      ],
+      "links": [
+        {
+          "type": "github",
+          "link": "https://github.com/song-chaeyoung/zigzag-clone"
+        },
+        {
+          "type": "website",
+          "link": "https://zigzag-clone-cy.netlify.app/"
+        }
+      ],
+      "desc": "실제 지그재그의 주요 기능과 디자인을 재현하는 데 중점을 두었으며, 사용자 친화적인 UI와 효율적인 상태 관리를 구현했습니다. Redux와 redux-thunk를 활용해 전역 상태를 관리하고, 비동기 데이터 처리를 통해 검색과 필터링 기능을 구현했습니다. Swiper를 사용하여 카테고리 및 상품 배너 슬라이드를 구현해 웹페이지의 다이나믹함을 더했습니다."
+    },
+    {
       "id": 9,
       "category": "react",
       "title": "TodoList",
