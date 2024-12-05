@@ -370,8 +370,10 @@ const Section01 = (
   const [position, setPosition] = useState<Position>({ x: 0, y: 0 });
   const [isLeft, setIsLeft] = useState<boolean>(false);
   const MOVE_AMOUNT = 2;
+  const JUMP_HEIGHT = 40;
 
   const handleCharter = useCallback((e: KeyboardEvent<HTMLDivElement>) => {
+    // e.preventDefault();
     if (moveText) setMoveText(false);
 
     const characterWidth =
@@ -383,29 +385,14 @@ const Section01 = (
     const maxMoveRange = screenWidth * 0.9;
 
     // const vwToPx = (vw: number) => (window.innerWidth * vw) / 100;
-    // if (e.key === "Alt") {
-    //   setPosition((prev) => ({ ...prev, y: -JUMP_HEIGHT }));
-    //   setTimeout(() => {
-    //     setPosition((prev) => ({ ...prev, y: 0 }));
-    //   }, 300);
-    // }
+    if (e.key === "Alt") {
+      e.preventDefault();
+      setPosition((prev) => ({ ...prev, y: -JUMP_HEIGHT }));
+      setTimeout(() => {
+        setPosition((prev) => ({ ...prev, y: 0 }));
+      }, 300);
+    }
 
-    // switch (e.key) {
-    //   case "ArrowLeft":
-    //     setIsLeft(true);
-    //     setPosition((prev: Position) => ({
-    //       ...prev,
-    //       x: Math.max(-vwToPx(10), prev.x - vwToPx(MOVE_AMOUNT)),
-    //     }));
-    //     break;
-    //   case "ArrowRight":
-    //     setIsLeft(false);
-    //     setPosition((prev: Position) => ({
-    //       ...prev,
-    //       x: Math.min(vwToPx(70), prev.x + vwToPx(MOVE_AMOUNT)),
-    //     }));
-    //     break;
-    // }
     switch (e.key) {
       case "ArrowLeft":
         e.preventDefault();
@@ -683,12 +670,33 @@ const Section01 = (
 
     const starInterval = setInterval(createStar, 4000);
 
+    const clearAllStars = () => {
+      if (!dropdownStarRef.current || !engineRef.current) return;
+
+      // DOM에서 모든 별 이미지 제거
+      while (dropdownStarRef.current.firstChild) {
+        dropdownStarRef.current.removeChild(dropdownStarRef.current.firstChild);
+      }
+
+      // Matter.js 엔진에서 모든 별 객체 제거
+      const bodies = Matter.Composite.allBodies(engineRef.current.world);
+      bodies.forEach((body) => {
+        // category가 0x0004인 바디만 제거 (별들만)
+        if (body.collisionFilter.category === 0x0004) {
+          Matter.World.remove(engineRef.current!.world, body);
+        }
+      });
+    };
+
+    const cleanupInterval = setInterval(clearAllStars, 500000);
+
     const runner = Runner.create();
     Runner.run(runner, engine);
     Render.run(render);
 
     return () => {
       clearInterval(starInterval);
+      clearInterval(cleanupInterval);
       Render.stop(render);
       World.clear(engine.world, false);
       Engine.clear(engine);
@@ -782,7 +790,7 @@ const Section01 = (
               <div>
                 <p>move me!</p>
                 <p>
-                  ← → alt <small>keydown!</small>{" "}
+                  ← → alt <small>keydown!</small>
                 </p>
               </div>
             </div>
