@@ -5,6 +5,7 @@ import { containerVariants, containerVariantsMobile } from "./Folder";
 import { mobileSizeContext } from "../App";
 import ContactContent from "./ContactContent";
 import ReadmeContent from "./ReadmeContent";
+import Bomb from "./Bomb";
 
 const Container = styled(motion.div)<{ zIndex: number }>`
   position: absolute;
@@ -145,7 +146,8 @@ const TextFolder = ({
       </div>
       <div className="textContent">
         {text === "readme" && <ReadmeContent />}
-        {text === "contact" && <ContactContent />}
+        {text === "aboutme" && <ContactContent />}
+        {text === "bomb" && <Bomb />}
       </div>
     </Container>
   );

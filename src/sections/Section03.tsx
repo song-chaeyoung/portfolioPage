@@ -30,6 +30,7 @@ const Text = styled.p`
   transform: translate(-50%, -50%);
   font-family: DungGeunMo;
   font-size: 5.625rem;
+  text-align: center;
   letter-spacing: 0.25rem;
   white-space: nowrap;
   z-index: 0;
@@ -216,7 +217,8 @@ const Section3 = (_: any, ref: React.ForwardedRef<HTMLDivElement>) => {
     <MainSection ref={triggerRef}>
       <Background ref={ref} />
       <Text ref={textRef}>
-        저는 이런 기술을 {mobileSize && <br />} 사용해봤어요
+        저는 이런 기술을 {mobileSize && <br />} 사용해봤어요 <br />{" "}
+        <small>Down Scroll!</small>
       </Text>
       <Container ref={sectionRef}>
         <article>

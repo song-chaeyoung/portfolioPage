@@ -25,7 +25,7 @@ const Container = styled(motion.div)<{ $zIndex: number }>`
   &::-webkit-scrollbar {
     display: none;
   } */
-
+  /* overflow-x: hidden; */
   .topBar {
     position: sticky;
     top: 1px;
@@ -68,7 +68,7 @@ const Container = styled(motion.div)<{ $zIndex: number }>`
     height: calc(100% - 1.9rem);
     position: relative;
     overflow-y: scroll;
-
+    overflow-x: hidden;
     .items {
       /* width: fit-content; */
       margin: 0 auto;
@@ -83,6 +83,7 @@ const Container = styled(motion.div)<{ $zIndex: number }>`
         width: 18.875rem;
         transition: all 0.3s;
         cursor: pointer;
+
         .img {
           width: 100%;
           /* width: 18.875rem; */
@@ -164,6 +165,9 @@ const Container = styled(motion.div)<{ $zIndex: number }>`
           display: flex;
           flex-direction: column;
           align-items: center;
+          &:last-child {
+            margin-bottom: 5rem;
+          }
           .img {
             height: 100%;
             width: 90vw;

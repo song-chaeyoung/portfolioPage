@@ -121,6 +121,14 @@ const Container = styled.div`
           width: 15rem;
           padding: 0.25rem;
           color: #000;
+          &:first-child {
+            border-bottom: 2px solid #999;
+            /* padding: 0.25rem 0; */
+            /* margin: 0 0.25rem; */
+            > img {
+              width: 2.25rem;
+            }
+          }
           img {
             width: 2.5rem;
           }
@@ -304,23 +312,14 @@ const ComputerDisplaySc4 = () => {
               <img src="/pixelart/documents.png" alt="documents" />
               <p>TypeScript</p>
             </motion.div>
-            {/* <motion.div
-              className="icon"
-              drag
-              dragMomentum={false}
-              onClick={() => folderOpen("nextjs")}
-            >
-              <img src="/pixelart/documents.png" alt="documents" />
-              <p>NextJS</p>
-            </motion.div> */}
             <motion.div
               className="icon"
               drag
               dragMomentum={false}
-              onClick={() => textFolderOpenEvent("contact")}
+              onClick={() => textFolderOpenEvent("aboutme")}
             >
               <img className="text" src="/pixelart/text.png" alt="text" />
-              <p>CONTACT</p>
+              <p>ABOUT ME</p>
             </motion.div>
           </div>
           <div className="icons_contact">
@@ -339,6 +338,15 @@ const ComputerDisplaySc4 = () => {
           <div className="power">
             {powerList && (
               <ul className="powerlist">
+                <li
+                  onClick={() => {
+                    textFolderOpenEvent("bomb");
+                    setPowerList(false);
+                  }}
+                >
+                  <img src="/pixelart/iconComputer.png" alt="documents" />
+                  <p>Bomb</p>
+                </li>
                 <li
                   onClick={() => {
                     folderOpen("all");
