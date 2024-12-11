@@ -225,6 +225,23 @@
       "desc": "올리브영 웹사이트의 UI/UX 개선을 목표로 클론 코딩 프로젝트를 진행했습니다. 디자인 및 기획 단계에서 웹사이트의 접근성과 사용자 경험을 고려하여 실제 웹사이트와 유사하게 구현했습니다. 로컬 스토리지를 활용해 장바구니 기능을 추가했으며, Firebase를 이용해 배포하였습니다."
     },
     {
+      "id": 3,
+      "category": "nextjs",
+      "title": "OTT Clone",
+      "skills": ["NextJS", "React", "TypeScript", "Vercel"],
+      "links": [
+        {
+          "type": "github",
+          "link": "https://github.com/song-chaeyoung/pado-ott"
+        },
+        {
+          "type": "website",
+          "link": "https://pado-ott-roan.vercel.app"
+        }
+      ],
+      "desc": "NextJS를 사용해 실제 오픈소스 영화 웹사이트와 유사한 사용자 경험을 제공하는 웹사이트를 개발했습니다. TMDB API를 사용해 영화데이터를 가져오고 제공하는 트레일러를 영상으로도 제공하는 실제 오픈소스 영화 웹사이트와 유사한 기능을 구현했습니다. 또한, 검색 기능을 구현하여 사용자가 원하는 영화를 쉽게 찾을 수 있도록 했습니다."
+    },
+    {
       "id": 5,
       "category": "typescript",
       "title": "TodoList(드래그앤 드롭)",

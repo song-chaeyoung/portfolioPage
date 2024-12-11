@@ -316,6 +316,15 @@ const ComputerDisplaySc4 = () => {
               className="icon"
               drag
               dragMomentum={false}
+              onClick={() => folderOpen("nextjs")}
+            >
+              <img src="/pixelart/documents.png" alt="documents" />
+              <p>Next.js</p>
+            </motion.div>
+            <motion.div
+              className="icon"
+              drag
+              dragMomentum={false}
               onClick={() => textFolderOpenEvent("aboutme")}
             >
               <img className="text" src="/pixelart/text.png" alt="text" />
