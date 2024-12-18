@@ -198,7 +198,7 @@
         },
         {
           "type": "website",
-          "link": "songchaeyoung-portfolio.web.app"
+          "link": "https://songchaeyoung.com/"
         }
       ],
       "desc": "포트폴리오를 보는 사용자들에게 인터렉티브하면서도 원하는 정보를 쉽게 전달할 수 있도록 고려하였습니다. GSAP와 Framer-motion을 사용해 애니메이션 효과를 적용하였으며, lenis를 사용해 부드러운 스크롤 효과를 구현했습니다. 또한, matter.js를 사용해 물리 엔진 기능을 구현하여 사용자 경험을 향상시켰습니다."
