@@ -310,27 +310,27 @@ const Section05 = () => {
                 <i className="nes-icon github is-medium"></i>
                 <div className="contact_icon_text">
                   <p>GITHUB</p>
-                  <p>https://github.com/song-chaeyoung</p>
+                  <p>github.com/song-chaeyoung</p>
                 </div>
               </a>
             </div>
             <div className="contact_icon">
-              <a href="mailto:call0512@naver.com" target="_blank">
+              <a href="mailto:chaengdev@gmail.com" target="_blank">
                 <i className="nes-icon gmail is-medium"></i>
                 <div className="contact_icon_text">
                   <p>MAIL</p>
-                  <p>call0512@naver.com</p>
+                  <p>chaengdev@gmail.com</p>
                 </div>
               </a>
             </div>
             <div className="contact_icon">
-              <a href="https://velog.io/@scy512" target="_blank">
+              <a href="https://developchang.tistory.com" target="_blank">
                 <i className="velog">
                   <img src="/pixelart/velog_logo.png" alt="velog" />
                 </i>
                 <div className="contact_icon_text">
-                  <p>VELOG</p>
-                  <p>https://velog.io/@scy512</p>
+                  <p>BLOG</p>
+                  <p>developchang.tistory.com</p>
                 </div>
               </a>
             </div>
