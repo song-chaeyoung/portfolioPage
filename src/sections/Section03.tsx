@@ -116,7 +116,6 @@ const Section3 = (_: any, ref: React.ForwardedRef<HTMLDivElement>) => {
 
   useEffect(() => {
     try {
-      console.log("data loading");
       (async () => {
         const response = await myData();
         setData(response.skills);
