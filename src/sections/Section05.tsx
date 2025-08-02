@@ -11,8 +11,6 @@ const Container = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
-  /* background: #212429; */
-  /* background: #2b2a3a; */
   background: linear-gradient(to bottom, #2b2a3a 60%, rgba(0, 111, 255, 0.7));
 
   .ballon {
@@ -324,13 +322,13 @@ const Section05 = () => {
               </a>
             </div>
             <div className="contact_icon">
-              <a href="https://developchang.tistory.com" target="_blank">
+              <a href="https://velog.io/@scy512/posts" target="_blank">
                 <i className="velog">
                   <img src="/pixelart/velog_logo.png" alt="velog" />
                 </i>
                 <div className="contact_icon_text">
                   <p>BLOG</p>
-                  <p>developchang.tistory.com</p>
+                  <p>velog.io/@scy512</p>
                 </div>
               </a>
             </div>
@@ -340,9 +338,6 @@ const Section05 = () => {
       <div className="icon_walking" ref={iconRef}>
         <img src="/pixelart/pixelicon_walk.gif" alt="walking" />
       </div>
-      {/* <div className="icon_computer">
-        <img src="/pixelart/iconComputer.png" alt="computer" />
-      </div> */}
       <div className="btmGround">
         <div className="lightGreen"></div>
         <div className="green"></div>
@@ -350,7 +345,6 @@ const Section05 = () => {
       </div>
       <div className="starts">
         {STARS.map((star, idx) => (
-          // <img src={it} alt="starts" key={idx} />
           <img
             src={star.image}
             alt="stars"

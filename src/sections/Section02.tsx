@@ -265,7 +265,7 @@ const Section02 = forwardRef<HTMLElement>((_, ref) => {
           <i className="nes-icon is-medium heart"></i>
         </div>
         <div className="btmIcons_contact">
-          <a href="mailto:call0512@naver.com" target="_blank">
+          <a href="mailto:cheangdev@gmail.com" target="_blank">
             <i className="nes-icon gmail is-medium"></i>
           </a>
           <a href="https://github.com/song-chaeyoung" target="_blank">

@@ -354,7 +354,7 @@ const Section01 = (
   ref: React.ForwardedRef<HTMLElement>
 ) => {
   const mobileSize = useContext(mobileSizeContext);
-  const textArray = ["프론트엔드", "노력하는", "REACT", "공부하는"];
+  const textArray = ["프론트엔드", "노력하는", "Next.js", "React", "공부하는"];
   const displayText = useTextEffect({ texts: textArray });
   const [moveText, setMoveText] = useState<boolean>(true);
   const [showScore, setShowScore] = useState<boolean>(false);
